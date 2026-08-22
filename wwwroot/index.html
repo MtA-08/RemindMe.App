@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <title>TodoApp</title>
+    <base href="/" />
+
+    <!-- Link to your CSS (Make sure app.css is in the wwwroot folder) -->
+    <link rel="stylesheet" href="css/app.css" />
+    <!-- This replaces TodoApp.Native.styles.css -->
+    <link rel="stylesheet" href="TodoApp.styles.css" />
+    <link rel="icon" href="data:," />
+</head>
+<body>
+    <div class="status-bar-safe-area"></div>
+
+    <div id="app">
+        <!-- Kept your custom loading animation -->
+        <svg class="loading-progress">
+            <circle r="40%" cx="50%" cy="50%" />
+            <circle r="40%" cx="50%" cy="50%" />
+        </svg>
+        <div class="loading-progress-text"></div>
+    </div>
+
+    <div id="blazor-error-ui" data-nosnippet>
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+
+    <script>
+        // We dropped appNotifications and the Service Worker, but KEPT your wheel picker!
+        window.wheelPicker = {
+            init: function (elementId, dotnetHelper, methodToCall) {
+                const container = document.getElementById(elementId);
+                if (!container) return;
+
+                let timeout;
+                container.addEventListener('scroll', () => {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => {
+                        const children = Array.from(container.children);
+                        const containerCenter = container.getBoundingClientRect().top + container.clientHeight / 2;
+
+                        let closest = children[0];
+                        let minDistance = Infinity;
+
+                        children.forEach(child => {
+                            const childCenter = child.getBoundingClientRect().top + child.clientHeight / 2;
+                            const distance = Math.abs(containerCenter - childCenter);
+                            if (distance < minDistance) {
+                                minDistance = distance;
+                                closest = child;
+                            }
+                        });
+
+                        const selectedValue = parseInt(closest.innerText, 10);
+                        if (!isNaN(selectedValue)) {
+                            dotnetHelper.invokeMethodAsync(methodToCall, selectedValue);
+                        }
+                    }, 100);
+                });
+            }
+        };
+    </script>
+
+    <!-- MAUI requires webview.js instead of webassembly.js -->
+    <script src="_framework/blazor.webview.js" autostart="false"></script>
+</body>
+</html>

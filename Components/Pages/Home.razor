@@ -1,0 +1,485 @@
+﻿@page "/"
+@layout MainLayout
+@inject IJSRuntime JSRuntime
+@using System.Text.Json
+@using System.Threading
+
+<PageTitle>Homepage</PageTitle>
+
+<div class="task-card-grid">
+
+    <!-- Add Task Button -->
+    <button class="add-task-button" id="add-task-button" @onclick="ShowModal">
+        <div>
+            <img src="plus-circle.svg" alt="Add">
+        </div>
+    </button>
+
+    <!-- Task Cards -->
+    @foreach (var task in tasks)
+    {
+        <div class="task-card @(task.IsCompleted ? "task-completed" : "")" @onpointerdown="() => StartPress(task)" @onpointerup="CancelPress" @onpointerleave="CancelPress">
+            <div class="task-card-preview">
+                <button class="complete-btn" @onclick="() => ToggleTaskCompletion(task)">
+                    <img src="check.svg" width="20" height="20">
+                </button>
+
+                <p class="task-title">@task.Name</p>
+
+                <div class="header-controls">
+                    <div class="priority-color-band" style="background-color: @GetPriotityColor(task.Priority);"></div>
+                    <button class="shavron-up-down" @onclick="task.ToggleExpandedView"><img src="@(task.isExpanded ? "chevron-up.svg" : "chevron-down.svg")"></button>
+                </div>
+            </div>
+            @if (task.isExpanded)
+            {
+                <div>
+                    <hr class="divider">
+                    <p>@task.Description</p>
+                    <hr class="divider">
+                    <p>Erinnerungen: @task.Reminder</p>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+
+<!-- Add task Overlay -->
+@if (isModalVisible)
+{
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-upper-part">
+                <button class="close-btn" @onclick="HideModal"><img src="x.svg"></button>
+                <h3>Neues ToDo erstellen</h3>
+            </div>
+            <div class="input-group">
+                <label style="color: #888;">Name</label>
+                <input type="text" @bind="newTask.Name" maxlength="24" class="text-input-field">
+            </div>
+            <div class="input-group">
+                <label style="color: #888;">Beschreibeung</label>
+                <input type="text" @bind="newTask.Description" class="text-input-field">
+            </div>
+            <div class="select-row">
+                <div class="input-group">
+                    <label style="color: #888;">Priorität</label>
+                    <select @bind="newTask.Priority" class="select-menu">
+                        <option value="-">Keine</option>
+                        <option value="Low">Niedrig</option>
+                        <option value="Mid">Mittel</option>
+                        <option value="High">Hoch</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label style="color: #888;">Erinnerungen</label>
+                    <div class="select-menu" @onclick="ToggleReminderMenu"></div>
+                </div>
+            </div>
+            <button class="save-btn" @onclick="SaveTask"><img src="check.svg"></button>
+        </div>
+    </div>
+}
+
+<!-- Optionen bearbeiten und löschen Overlay -->
+@if (isOptionsMenuVisible)
+{
+    <div class="modal-overlay" @onclick="CloseOptionsMenu">
+        <!-- stopPropagation prevents closing when clicking the actual menu box -->
+        <div class="modal-content options-menu" @onclick:stopPropagation="true">
+            <h3>Optionen für: @activeTask.Name</h3>
+            <button class="save-btn" style="width: 100%;" @onclick="EditTask">Bearbeiten</button>
+            <button class="save-btn" style="width: 100%; background-color: #9C1C00; border-color: #851900" @onclick="DeleteTask">Löschen</button>
+        </div>
+    </div>
+}
+
+<!-- Erinnerung Menü Overlay-->
+@if (isReminderMenuVisible)
+{
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-upper-part">
+                <button class="close-btn" @onclick="ToggleReminderMenu"><img src="x.svg"></button>
+                <h3>Erinnerungen erstellen</h3>
+            </div>
+            @if (notificationsEnabled)
+            {
+                @foreach (var Reminder in newTask.Reminders)
+                {
+                    <div class="set-reminder-menu">
+                        <label>Erinnerung #1</label>
+                        <div class="reminder-menu-day-picker">
+                            @foreach (var day in new[] { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" })
+                            {
+                                <p class="@(Reminder.Days.Contains(day) ? "selected-day" : "")" 
+                                @onclick="() => ToggleDay(Reminder, day)">
+                                    @day
+                                </p>
+                            }
+                        </div>
+                        <div style="display: flex;">
+                            <div class="reminder-menu-time-picker" @onclick="() => EditReminderTime(Reminder)">
+                                <img src="clock.svg" style="padding-right: 8px;"><p>@Reminder.FormattedTime</p>
+                            </div>
+                            <div class="reminder-menu-delete" @onclick="() => RemoveReminder(Reminder)">
+                                <img src="trash.svg">
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                <div class="add-remider-button" @onclick="AddNewReminder">
+                    <img src="plus.svg" style="padding-right: 5px;"><p>Erinnerung hinzufügen</p>
+                </div>
+                <div class="add-remider-button" @onclick='() => SendNotification("Titel", "Text in Benachrichtigung")'>
+                    <img src="plus.svg" style="padding-right: 5px;"><p>Noti senden</p>
+                </div>
+            }
+            else
+            {
+                <div class="notification-permission-query">
+                    <button class="ask-permission-button" @onclick="RequestNotificationPermission">Benachrichtigungen erlauben</button>
+                </div>
+            }
+        </div>
+    </div>
+}
+
+<!-- Erinnerung Zeit wähler Overlay -->
+@if (selectedReminder != null)
+{
+    <div class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-upper-part">
+                <button class="close-btn" @onclick="CloseTimePicker"><img src="x.svg"></button>
+                <h3>Zeit auswählen:</h3>
+            </div>
+            <input type="time" class="time-input" @bind="TempTime" />
+
+                <button class="save-btn" @onclick="SaveTime">Fertig</button>
+            
+        </div>
+    </div>
+}
+
+@code {
+    // List for saved tasks
+    private List<TodoTask> tasks = new();
+
+    // Temp task for modal inputs
+    private TodoTask newTask = new TodoTask();
+
+    // Add task modal toggle
+    private bool isModalVisible = false;
+
+    private void ShowModal()
+    {
+        isModalVisible = true;
+    }
+
+    private void HideModal()
+    {
+        newTask = new TodoTask();
+        isModalVisible = false;
+        isEditing = false;
+        activeTask = null;
+    }
+
+    private async Task SaveTask()
+    {
+        string safeName = newTask.Name;
+        if (safeName.Length > 24)
+        {
+            safeName = safeName.Substring(0, 24);
+        }
+
+        if (isEditing && activeTask != null)
+        {
+            // Update existing task details
+            activeTask.Name = safeName;
+            activeTask.Description = newTask.Description;
+            activeTask.Priority = newTask.Priority;
+            activeTask.Reminder = newTask.Reminder;
+            activeTask.Reminders = newTask.Reminders; // Commit the updated reminders list
+        }
+        else
+        {
+            // Create new task and preserve its reminders list
+            tasks.Add(new TodoTask
+            {
+                Name = safeName,
+                Description = newTask.Description,
+                Priority = newTask.Priority,
+                Reminder = newTask.Reminder,
+                Reminders = newTask.Reminders // Attach the reminders list here
+            });
+        }
+
+        HideModal();
+        await SaveDataToBrowser();
+    }
+
+    // Priority color controller
+    private string GetPriotityColor(string priorityLevel)
+    {
+        return priorityLevel switch
+        {
+            "Low" => "rgba(26, 201, 34, 0.8)",
+            "Mid" => "rgba(225, 225, 8, 0.8)",
+            "High" => "rgba(255, 0, 0, 0.471)",
+            "-" => "transparent",
+            _ => "default value"
+        };
+    }
+
+    //speichert die Liste im Browser als ein Json Textdatei
+    private async Task SaveDataToBrowser()
+    {
+        // übersetzt die Liste "tasks" zur ein JSON Text string
+        string json = JsonSerializer.Serialize(tasks);
+
+        // speichert den JSON string als "mytasks"
+        await JSRuntime.InvokeVoidAsync("localStorage.setItem", "myTasks", json);
+    }
+
+    // wird beim öffnen/aktualiesern der Seite ausgeführt
+    protected override async Task OnInitializedAsync()
+    {
+        // prüft ob der Browser eine Datei mit den namen "myTasks" hat
+        string savedJson = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "myTasks");
+
+        if (!string.IsNullOrEmpty(savedJson))
+        {
+            tasks = JsonSerializer.Deserialize<List<TodoTask>>(savedJson) ?? new List<TodoTask>();
+        }
+    }
+
+    private async Task ToggleTaskCompletion(TodoTask task)
+    {
+        task.IsCompleted = !task.IsCompleted;
+
+        await SaveDataToBrowser();
+    }
+
+    // Variablen für zeiterfassung bei einer drücken und halte Geste auf ein Task
+    private CancellationTokenSource? pressTimer;
+    private TodoTask? activeTask = null;
+    private bool isOptionsMenuVisible = false;
+    private bool isEditing = false;
+
+    private async Task StartPress(TodoTask task)
+    {
+        pressTimer = new CancellationTokenSource();
+        try
+        {
+            // 600ms warten damit nicht jeder druck als halte Geste erkannt wird
+            await Task.Delay(600, pressTimer.Token);
+
+            // hier wird nur ausgeführt wenn der obere Bedingung erfüllt wurde
+            activeTask = task;
+            isOptionsMenuVisible = true;
+            StateHasChanged();
+        }
+        catch (TaskCanceledException) {/*es wid nichts gemacht wenn der druck kürzer als 600ms war*/}
+    }
+
+    private void CancelPress()
+    {
+        pressTimer?.Cancel(); // Zeiterfassung stoppen wenn der Nutzer finger abhebt
+    }
+
+    private void CloseOptionsMenu() => isOptionsMenuVisible = false;
+
+    // Task löschen
+    private async Task DeleteTask()
+    {
+        if (activeTask != null)
+        {
+            tasks.Remove(activeTask);
+
+            //Löschung der Task speichern
+            await SaveDataToBrowser();
+        }
+        CloseOptionsMenu();
+    }
+
+    // Task bearbeiten
+    private void EditTask()
+    {
+        isEditing = true;
+        CloseOptionsMenu();
+
+        // Populate temporary newTask state including deep-copied reminders
+        newTask = new TodoTask
+        {
+            Name = activeTask!.Name,
+            Description = activeTask.Description,
+            Priority = activeTask.Priority,
+            Reminder = activeTask.Reminder,
+            Reminders = activeTask.Reminders.Select(r => new Reminder
+            {
+                Id = r.Id,
+                Days = new List<string>(r.Days),
+                Hour = r.Hour,
+                Minute = r.Minute
+            }).ToList()
+        };
+
+        ShowModal();
+    }
+
+    // Task class
+    public class TodoTask
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public string Priority { get; set; } = "-";
+        public string Reminder { get; set; } = "-";
+        public bool IsCompleted { get; set; } = false;
+
+        public List<Reminder> Reminders { get; set; } = new();
+
+        public bool isExpanded { get; set; } = false;
+        public void ToggleExpandedView()
+        {
+            isExpanded = !isExpanded;
+        }
+    }
+
+    //reminder class
+    public class Reminder
+    {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public List<string> Days { get; set; } = new List<string> { "Mo", "Di", "Mi", "Do", "Fr" };
+        public int Hour { get; set; } = 12;
+        public int Minute { get; set; } = 0;
+
+        public string FormattedTime => $"{Hour:D2}:{Minute:D2}";
+
+        public Reminder()
+        {
+            var defaultTime = DateTime.Now.AddHours(1);
+            Hour = defaultTime.Hour;
+            Minute = defaultTime.Minute;
+        }
+    }
+
+    private bool isReminderMenuVisible = false;
+
+    private void ToggleReminderMenu()
+    {
+        isReminderMenuVisible = !isReminderMenuVisible;
+    }
+
+    // fügt eine leere Erinnerung Modul zur aktuellen Task
+    private void AddNewReminder()
+    {
+        newTask.Reminders.Add(new Reminder());
+    }
+
+    // Löscht ein spezifische Erinnerung
+    private void RemoveReminder(Reminder reminder)
+    {
+        newTask.Reminders.Remove(reminder);
+    }
+
+    // Schaltet ein Tag an oder aus
+    private void ToggleDay(Reminder reminder, string day)
+    {
+        if (reminder.Days.Contains(day))
+        {
+            reminder.Days.Remove(day);
+        }
+        else
+        {
+            reminder.Days.Add(day);
+        }
+    }
+
+    // benachrictigungen
+
+    // Variable um Erlaubnis zu prüfen
+    private bool notificationsEnabled = false;
+
+    // Funktion um nach benachrictigung Erlaubnis zu fragen
+    private async Task RequestNotificationPermission()
+    {
+        notificationsEnabled = await JSRuntime.InvokeAsync<bool>("appNotifications.askPermission");
+    }
+
+    // Funktion um Benachrichtigung zu senden
+    private async Task SendNotification(string title, string message)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("appNotifications.send", title, message);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Notification failed: {ex.Message}");
+        }
+    }
+
+    private async Task TriggerTaskReminder(TodoTask task)
+    {
+        string title = $"Erinnerung: {task.Name}";
+        string text = string.IsNullOrEmpty(task.Description) 
+            ? "Deine Aufgabe ist fällig!" 
+            : task.Description;
+
+        await SendNotification(title, text);
+    }
+
+    // Zeigt darauf zur welche Task der Erinnerung gehört
+    private Reminder? selectedReminder;
+
+    private DotNetObjectReference<Home>? objRef;
+
+    public void Dispose()
+    {
+        objRef?.Dispose();
+    }
+
+    private TimeOnly TempTime;
+
+    // 1. Opens the picker and loads the current time into the input
+    private void EditReminderTime(Reminder reminder)
+    {
+        selectedReminder = reminder;
+        TempTime = new TimeOnly(reminder.Hour, reminder.Minute);
+    }
+
+    // 2. Saves the new time back to your Reminder object
+    private void SaveTime()
+    {
+        if (selectedReminder != null)
+        {
+            selectedReminder.Hour = TempTime.Hour;
+            selectedReminder.Minute = TempTime.Minute;
+
+            selectedReminder = null;
+
+            StateHasChanged();
+        }
+    }
+
+    // 3. Cancels without saving
+    private void CloseTimePicker()
+    {
+        selectedReminder = null;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Query the native browser state directly—no localStorage required
+            notificationsEnabled = await JSRuntime.InvokeAsync<bool>("appNotifications.checkPermission");
+
+            // Re-render the UI once the true browser state is known
+            StateHasChanged();
+        }
+    }
+}

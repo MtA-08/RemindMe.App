@@ -1,0 +1,113 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\maari\\.nuget\\packages\\microsoft.aspnetcore.components.webview\\10.0.0\\staticwebassets\\blazor.modules.json",
+      "PackagePath": "staticwebassets\\_framework\\blazor.modules.json"
+    },
+    {
+      "Id": "C:\\Users\\maari\\.nuget\\packages\\microsoft.aspnetcore.components.webview\\10.0.0\\staticwebassets\\blazor.webview.js",
+      "PackagePath": "staticwebassets\\_framework\\blazor.webview.js"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\obj\\Debug\\net10.0-windows10.0.19041.0\\win-x64\\scopedcss\\bundle\\TodoApp.styles.css",
+      "PackagePath": "staticwebassets\\TodoApp.styles.css"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\app.css",
+      "PackagePath": "staticwebassets\\app.css"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\bell.svg",
+      "PackagePath": "staticwebassets\\bell.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\calendar.svg",
+      "PackagePath": "staticwebassets\\calendar.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\check-circle.svg",
+      "PackagePath": "staticwebassets\\check-circle.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\check.svg",
+      "PackagePath": "staticwebassets\\check.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\chevron-down.svg",
+      "PackagePath": "staticwebassets\\chevron-down.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\chevron-up.svg",
+      "PackagePath": "staticwebassets\\chevron-up.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\clock.svg",
+      "PackagePath": "staticwebassets\\clock.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\favicon.png",
+      "PackagePath": "staticwebassets\\favicon.png"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\home.svg",
+      "PackagePath": "staticwebassets\\home.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\icon-192.png",
+      "PackagePath": "staticwebassets\\icon-192.png"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\index.html",
+      "PackagePath": "staticwebassets\\index.html"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\plus-circle.svg",
+      "PackagePath": "staticwebassets\\plus-circle.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\plus.svg",
+      "PackagePath": "staticwebassets\\plus.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\settings.svg",
+      "PackagePath": "staticwebassets\\settings.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\trash.svg",
+      "PackagePath": "staticwebassets\\trash.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\x.svg",
+      "PackagePath": "staticwebassets\\x.svg"
+    },
+    {
+      "Id": "obj\\Debug\\net10.0-windows10.0.19041.0\\win-x64\\staticwebassets\\msbuild.TodoApp.Microsoft.AspNetCore.StaticWebAssetEndpoints.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssetEndpoints.props"
+    },
+    {
+      "Id": "obj\\Debug\\net10.0-windows10.0.19041.0\\win-x64\\staticwebassets\\msbuild.TodoApp.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net10.0-windows10.0.19041.0\\win-x64\\staticwebassets\\msbuild.build.TodoApp.props",
+      "PackagePath": "build\\TodoApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net10.0-windows10.0.19041.0\\win-x64\\staticwebassets\\msbuild.buildMultiTargeting.TodoApp.props",
+      "PackagePath": "buildMultiTargeting\\TodoApp.props"
+    },
+    {
+      "Id": "obj\\Debug\\net10.0-windows10.0.19041.0\\win-x64\\staticwebassets\\msbuild.buildTransitive.TodoApp.props",
+      "PackagePath": "buildTransitive\\TodoApp.props"
+    }
+  ],
+  "ElementsToRemove": []
+}
