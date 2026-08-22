@@ -1,7 +1,4 @@
-wwwroot\index.html
 wwwroot\app.css
-wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
-wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
 wwwroot\bell.svg
 wwwroot\calendar.svg
 wwwroot\check-circle.svg
@@ -12,6 +9,9 @@ wwwroot\clock.svg
 wwwroot\favicon.png
 wwwroot\home.svg
 wwwroot\icon-192.png
+wwwroot\index.html
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
+wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
 wwwroot\plus-circle.svg
 wwwroot\plus.svg
 wwwroot\settings.svg

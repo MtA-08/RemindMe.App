@@ -3,6 +3,7 @@
 @inject IJSRuntime JSRuntime
 @using System.Text.Json
 @using System.Threading
+@using Plugin.LocalNotification
 
 <PageTitle>Homepage</PageTitle>
 
@@ -400,36 +401,62 @@
 
     // benachrictigungen
 
-    // Variable um Erlaubnis zu prüfen
+    // ==========================================
+    // NATIVE MAUI NOTIFICATIONS
+    // ==========================================
+
     private bool notificationsEnabled = false;
 
-    // Funktion um nach benachrictigung Erlaubnis zu fragen
-    private async Task RequestNotificationPermission()
+    // 1. Check permission silently when the app loads
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        notificationsEnabled = await JSRuntime.InvokeAsync<bool>("appNotifications.askPermission");
+        if (firstRender)
+        {
+            // Asks the Android/iOS OS if permissions are already granted
+            notificationsEnabled = await LocalNotificationCenter.Current.AreNotificationsEnabled();
+            StateHasChanged();
+        }
     }
 
-    // Funktion um Benachrichtigung zu senden
+    // 2. Ask the user for permission when they click the button
+    private async Task RequestNotificationPermission()
+    {
+        // Triggers the native Android/iOS permission popup
+        notificationsEnabled = await LocalNotificationCenter.Current.RequestNotificationPermission();
+        StateHasChanged();
+    }
+
+    // 3. Send a native notification
     private async Task SendNotification(string title, string message)
     {
         try
         {
-            await JSRuntime.InvokeVoidAsync("appNotifications.send", title, message);
+            // Double check permission just in case
+            if (await LocalNotificationCenter.Current.AreNotificationsEnabled() == false)
+            {
+                await LocalNotificationCenter.Current.RequestNotificationPermission();
+            }
+
+            // Build the native notification
+            var request = new NotificationRequest
+            {
+                NotificationId = new Random().Next(1000, 99999), // Unique ID so they don't overwrite each other
+                Title = title,
+                Description = message,
+                Schedule = new NotificationRequestSchedule
+                {
+                    // Fire it 1 second from now for testing
+                    NotifyTime = DateTime.Now.AddSeconds(1)
+                }
+            };
+
+            // Hand it off to the Android/iOS operating system
+            await LocalNotificationCenter.Current.Show(request);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Notification failed: {ex.Message}");
         }
-    }
-
-    private async Task TriggerTaskReminder(TodoTask task)
-    {
-        string title = $"Erinnerung: {task.Name}";
-        string text = string.IsNullOrEmpty(task.Description) 
-            ? "Deine Aufgabe ist fällig!" 
-            : task.Description;
-
-        await SendNotification(title, text);
     }
 
     // Zeigt darauf zur welche Task der Erinnerung gehört
@@ -469,17 +496,5 @@
     private void CloseTimePicker()
     {
         selectedReminder = null;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            // Query the native browser state directly—no localStorage required
-            notificationsEnabled = await JSRuntime.InvokeAsync<bool>("appNotifications.checkPermission");
-
-            // Re-render the UI once the true browser state is known
-            StateHasChanged();
-        }
     }
 }
