@@ -14,12 +14,12 @@ Eine einfache ToDo-App, entwickelt mit **.NET MAUI** und **Blazor**. Die App nut
 * **Flexible Erinnerungen:** Lege für jede Aufgabe fest, an welchen Wochentagen und zu welcher Uhrzeit du erinnert werden möchtest.
 * **Lokale Datenspeicherung:** Deine Aufgaben werden direkt auf dem Gerät gespeichert, damit sie nicht verloren gehen.
 * **Native Benachrichtigungen:** Integrierte Unterstützung für echte Betriebssystem-Benachrichtigungen (Android / iOS).
-
+* **Automatisierte Benachrichtigungen:** Die Verknüpfung der eingestellten Wochentage und Uhrzeiten, damit Benachrichtigungen vollautomatisch zur richtigen Zeit auf dem Handy ankommen.
+  
 ---
 
 ## Was sich aktuell in Entwicklung befindet (Geplante Features)
 
-* **Automatisierte Benachrichtigungen:** Die Verknüpfung der eingestellten Wochentage und Uhrzeiten, damit Benachrichtigungen vollautomatisch zur richtigen Zeit auf dem Handy ankommen.
 * **UI-Verbesserungen:** Noch flüssigere Übergänge und ein übersichtlicheres Design für die Benachrichtigungs-Menüs.
 * **Fehlerbehebung:** Laufende Tests und Optimierungen auf verschiedenen Geräten.
 
