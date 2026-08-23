@@ -12,12 +12,12 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>uxxpwnn3ho</Fingerprint>
-      <Integrity>EoTRs9MJr4py/XHPdDrjHeV2mhrPgix9vzFzM0QoXpE=</Integrity>
+      <Fingerprint>laf6qiblxc</Fingerprint>
+      <Integrity>7WSQKINX0Kc7CR/o2/sKUdadgIAIp8U/TiWJX3nnLVI=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <FileLength>3406</FileLength>
-      <LastWriteTime>Sat, 22 Aug 2026 15:14:47 GMT</LastWriteTime>
+      <FileLength>3410</FileLength>
+      <LastWriteTime>Sun, 23 Aug 2026 17:27:28 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\app.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\bell.svg'))">
@@ -232,12 +232,12 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>lpwr42u04x</Fingerprint>
-      <Integrity>p3XEyych3urIB/tKfOvS/Z2ReYeeitv+1s+oajd4iT4=</Integrity>
+      <Fingerprint>gi9syk7jj8</Fingerprint>
+      <Integrity>KIGbgW14Vfdwpr4+TNasRuGWQQAbJCaDTV3wV9iwmKg=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <FileLength>2802</FileLength>
-      <LastWriteTime>Sat, 22 Aug 2026 15:57:22 GMT</LastWriteTime>
+      <FileLength>2803</FileLength>
+      <LastWriteTime>Sat, 22 Aug 2026 21:10:36 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\index.html'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\lib\bootstrap\dist\css\bootstrap.min.css'))">
@@ -352,12 +352,12 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName>ScopedCss</AssetTraitName>
       <AssetTraitValue>ApplicationBundle</AssetTraitValue>
-      <Fingerprint>w2nrbvatye</Fingerprint>
-      <Integrity>aKtqg412HDXCpoRISV952c9+U9RuaXyw77gAXoRyRqg=</Integrity>
+      <Fingerprint>0mp8xr7197</Fingerprint>
+      <Integrity>qPAPlMJn59leJqQos5D3s1a0pyZo+fkYoZ3FAoxwVhc=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <FileLength>10058</FileLength>
-      <LastWriteTime>Sat, 22 Aug 2026 16:33:49 GMT</LastWriteTime>
+      <FileLength>9676</FileLength>
+      <LastWriteTime>Sun, 23 Aug 2026 19:10:26 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\TodoApp.styles.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\trash.svg'))">

@@ -2,20 +2,27 @@
 .container[b-0xcmv6knwm] {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 42px 93%;
-    gap: 0px 0px;
+    padding-top: env(safe-area-inset-top, 20px);
 }
 
 .upper-band[b-0xcmv6knwm] {
     background-color: #131215;
-    border-bottom: 1px solid rgb(39, 39, 39);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
+    padding-bottom: 10px;
+    padding-top: 5px;
 }
 
-/* Paste all your .menu-bar, .menu-bar-position, and .menu-list CSS here! */
+.task-card-grid[b-0xcmv6knwm] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* MENU BAR  */
 .menu-bar-position[b-0xcmv6knwm] {
     position: fixed;
     bottom: 5px;

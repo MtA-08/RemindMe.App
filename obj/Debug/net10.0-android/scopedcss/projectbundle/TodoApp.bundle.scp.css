@@ -3,20 +3,27 @@
 .container[b-0xcmv6knwm] {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 42px 93%;
-    gap: 0px 0px;
+    padding-top: env(safe-area-inset-top, 20px);
 }
 
 .upper-band[b-0xcmv6knwm] {
     background-color: #131215;
-    border-bottom: 1px solid rgb(39, 39, 39);
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 24px;
+    padding-bottom: 10px;
+    padding-top: 5px;
 }
 
-/* Paste all your .menu-bar, .menu-bar-position, and .menu-list CSS here! */
+.task-card-grid[b-0xcmv6knwm] {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* MENU BAR  */
 .menu-bar-position[b-0xcmv6knwm] {
     position: fixed;
     bottom: 5px;
@@ -104,15 +111,6 @@ input:focus[b-gg1ak8a4hz] {
 }
 
 /* TASK CARD*/
-.task-card-grid[b-gg1ak8a4hz] {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-    justify-items: center;
-    align-content: center;
-    overflow-y: auto;
-    padding: 5px;
-    padding-bottom: 100px;
-}
 
 .task-card[b-gg1ak8a4hz]{
     width: 90vw;
@@ -126,6 +124,7 @@ input:focus[b-gg1ak8a4hz] {
     user-select: none;
     -webkit-user-select: none;
     touch-action: pan-y;
+    cursor: pointer;
 }
 
 .task-card-preview[b-gg1ak8a4hz] {
@@ -394,22 +393,6 @@ input:focus[b-gg1ak8a4hz] {
     user-select: none;
 }
 
-.scroll-wheel[b-gg1ak8a4hz] {
-    height: 150px;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    user-select: none;
-}
-
-.scroll-item[b-gg1ak8a4hz] {
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    scroll-snap-align: center;
-    user-select: none;
-}
-
 .notification-permission-query[b-gg1ak8a4hz]{
     display: flex;
     height: 100%;
@@ -463,3 +446,5 @@ input[type="time"][b-gg1ak8a4hz]::-webkit-calendar-picker-indicator {
 }
 
 /**/
+/* /Components/Pages/TaskDetail.razor.rz.scp.css */
+/* CSS for TaskDetail component */

@@ -1,0 +1,168 @@
+﻿@page "/task/{Id}"
+@inject IJSRuntime JSRuntime
+@inject NavigationManager NavManager
+@using System.Text.Json
+@using Plugin.LocalNotification
+
+@if (task == null)
+{
+    <p><em>Aufgabe wird geladen oder existiert nicht...</em></p>
+}
+else
+{
+    @if (!isEditing)
+    {
+        <!-- ANSICHTS-MODUS -->
+        <div class="detail-header">
+            <h2>@task.Name</h2>
+            <span class="priority-badge">Priorität: @task.Priority</span>
+        </div>
+
+        <div class="detail-body">
+            <h4>Beschreibung:</h4>
+            <p>@(string.IsNullOrEmpty(task.Description) ? "Keine Beschreibung vorhanden." : task.Description)</p>
+
+            <h4>Status:</h4>
+            <p>@(task.IsCompleted ? "✅ Erledigt" : "⏳ Offen")</p>
+        </div>
+
+        <div class="action-buttons mt-4">
+            <button class="btn btn-secondary" @onclick="GoBack">Zurück</button>
+            <button class="btn btn-primary" @onclick="StartEditing">Bearbeiten</button>
+            <button class="btn btn-danger" @onclick="DeleteTask">Löschen</button>
+        </div>
+    }
+    else
+    {
+        <!-- BEARBEITUNGS-MODUS -->
+        <div class="detail-header">
+            <h3>Aufgabe bearbeiten</h3>
+        </div>
+
+        <div class="detail-body">
+            <div class="input-group mb-3">
+                <label style="color: #888;">Name</label>
+                <input type="text" @bind="editName" maxlength="24" class="text-input-field" />
+            </div>
+
+            <div class="input-group mb-3">
+                <label style="color: #888;">Beschreibung</label>
+                <input type="text" @bind="editDescription" class="text-input-field" />
+            </div>
+
+            <div class="input-group mb-3">
+                <label style="color: #888;">Priorität</label>
+                <select @bind="editPriority" class="select-menu">
+                    <option value="-">Keine</option>
+                    <option value="Low">Niedrig</option>
+                    <option value="Mid">Mittel</option>
+                    <option value="High">Hoch</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="action-buttons mt-4">
+            <button class="btn btn-secondary" @onclick="CancelEditing">Abbrechen</button>
+            <button class="btn btn-success" @onclick="SaveEdit">Speichern</button>
+        </div>
+    }
+}
+
+@code {
+    [Parameter]
+    public string Id { get; set; } = string.Empty;
+
+    private TodoTask? task;
+    private List<TodoTask> tasks = new();
+
+    // Variablen für den Bearbeitungsmodus
+    private bool isEditing = false;
+    private string editName = string.Empty;
+    private string editDescription = string.Empty;
+    private string editPriority = "-";
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Aufgaben aus dem LocalStorage laden (Key: "myTasks")
+        var json = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "myTasks");
+
+        if (!string.IsNullOrEmpty(json))
+        {
+            tasks = JsonSerializer.Deserialize<List<TodoTask>>(json) ?? new();
+            task = tasks.FirstOrDefault(t => t.Id == Id);
+        }
+    }
+
+    private void StartEditing()
+    {
+        if (task != null)
+        {
+            // Aktuelle Werte in die temporären Edit-Variablen laden
+            editName = task.Name;
+            editDescription = task.Description;
+            editPriority = task.Priority;
+            isEditing = true;
+        }
+    }
+
+    private void CancelEditing()
+    {
+        isEditing = false;
+    }
+
+    private async Task SaveEdit()
+    {
+        if (task != null)
+        {
+            string safeName = editName;
+            if (safeName.Length > 24) safeName = safeName.Substring(0, 24);
+
+            // Werte auf die Aufgabe übertragen
+            task.Name = safeName;
+            task.Description = editDescription;
+            task.Priority = editPriority;
+
+            // In den LocalStorage speichern
+            var json = JsonSerializer.Serialize(tasks);
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "myTasks", json);
+
+            // Zurück in den Ansichts-Modus wechseln
+            isEditing = false;
+            StateHasChanged();
+        }
+    }
+
+    private async Task DeleteTask()
+    {
+        if (task != null)
+        {
+            // 1. Geplante Benachrichtigungen im Handy stoppen (falls vorhanden)
+            if (task.NotificationIds != null && task.NotificationIds.Any())
+            {
+                try
+                {
+                    LocalNotificationCenter.Current.Cancel(task.NotificationIds.ToArray());
+                }
+                catch
+                {
+                    // Ignorieren, falls das System busy ist
+                }
+            }
+
+            // 2. Aus der Liste entfernen
+            tasks.Remove(task);
+
+            // 3. Aktualisierte Liste speichern
+            var json = JsonSerializer.Serialize(tasks);
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "myTasks", json);
+
+            // 4. Zurück zur Startseite
+            NavManager.NavigateTo("/");
+        }
+    }
+
+    private void GoBack()
+    {
+        NavManager.NavigateTo("/");
+    }
+}

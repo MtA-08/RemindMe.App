@@ -1,6 +1,7 @@
 ﻿@page "/"
 @layout MainLayout
 @inject IJSRuntime JSRuntime
+@inject NavigationManager Navigation
 @using System.Text.Json
 @using System.Threading
 @using Plugin.LocalNotification
@@ -8,10 +9,8 @@
 
 <PageTitle>Homepage</PageTitle>
 
-<div class="task-card-grid">
-
     <!-- Add Task Button -->
-    <button class="add-task-button" id="add-task-button" @onclick="ShowModal">
+    <button class="add-task-button"  @onclick="ShowModal">
         <div>
             <img src="plus-circle.svg" alt="Add">
         </div>
@@ -20,31 +19,16 @@
     <!-- Task Cards -->
     @foreach (var task in tasks)
     {
-        <div class="task-card @(task.IsCompleted ? "task-completed" : "")" @onpointerdown="() => StartPress(task)" @onpointerup="CancelPress" @onpointerleave="CancelPress">
+    <div class="task-card @(task.IsCompleted ? "task-completed" : "")" @onclick="() => OpenTaskDetail(task.Id)">
             <div class="task-card-preview">
                 <button class="complete-btn" @onclick="() => ToggleTaskCompletion(task)">
                     <img src="check.svg" width="20" height="20">
                 </button>
 
                 <p class="task-title">@task.Name</p>
-
-                <div class="header-controls">
-                    <div class="priority-color-band" style="background-color: @GetPriotityColor(task.Priority);"></div>
-                    <button class="shavron-up-down" @onclick="task.ToggleExpandedView"><img src="@(task.isExpanded ? "chevron-up.svg" : "chevron-down.svg")"></button>
-                </div>
             </div>
-            @if (task.isExpanded)
-            {
-                <div>
-                    <hr class="divider">
-                    <p>@task.Description</p>
-                    <hr class="divider">
-                    <p>Erinnerungen: @task.Reminder</p>
-                </div>
-            }
         </div>
     }
-</div>
 
 
 <!-- Add task Overlay -->
@@ -76,23 +60,13 @@
                 </div>
                 <div class="input-group">
                     <label style="color: #888;">Erinnerungen</label>
-                    <div class="select-menu" @onclick="ToggleReminderMenu"></div>
+                    <div class="select-menu" @onclick="ToggleReminderMenu" style="cursor: pointer;">
+                        <!-- Zeigt an, wie viele Erinnerungen erstellt wurden -->
+                        @(newTask.Reminders.Count > 0 ? $"{newTask.Reminders.Count} Erinnerung(en) eingestellt" : "Erinnerungen hinzufügen...")
+                    </div>
                 </div>
             </div>
             <button class="save-btn" @onclick="SaveTask"><img src="check.svg"></button>
-        </div>
-    </div>
-}
-
-<!-- Optionen bearbeiten und löschen Overlay -->
-@if (isOptionsMenuVisible)
-{
-    <div class="modal-overlay" @onclick="CloseOptionsMenu">
-        <!-- stopPropagation prevents closing when clicking the actual menu box -->
-        <div class="modal-content options-menu" @onclick:stopPropagation="true">
-            <h3>Optionen für: @activeTask.Name</h3>
-            <button class="save-btn" style="width: 100%;" @onclick="EditTask">Bearbeiten</button>
-            <button class="save-btn" style="width: 100%; background-color: #9C1C00; border-color: #851900" @onclick="DeleteTask">Löschen</button>
         </div>
     </div>
 }
@@ -189,34 +163,38 @@
         activeTask = null;
     }
 
+    // ==========================================
+    // Task speicherung Funktion
+    // ==========================================
+
     private async Task SaveTask()
     {
         string safeName = newTask.Name;
-        if (safeName.Length > 24)
-        {
-            safeName = safeName.Substring(0, 24);
-        }
+        if (safeName.Length > 24) safeName = safeName.Substring(0, 24);
 
         if (isEditing && activeTask != null)
         {
-            // Update existing task details
             activeTask.Name = safeName;
             activeTask.Description = newTask.Description;
             activeTask.Priority = newTask.Priority;
-            activeTask.Reminder = newTask.Reminder;
-            activeTask.Reminders = newTask.Reminders; // Commit the updated reminders list
+            activeTask.Reminders = newTask.Reminders;
+
+            // NEU: Benachrichtigungen neu berechnen
+            await ScheduleNotificationsForTask(activeTask);
         }
         else
         {
-            // Create new task and preserve its reminders list
-            tasks.Add(new TodoTask
+            var createdTask = new TodoTask
             {
                 Name = safeName,
                 Description = newTask.Description,
                 Priority = newTask.Priority,
-                Reminder = newTask.Reminder,
-                Reminders = newTask.Reminders // Attach the reminders list here
-            });
+                Reminders = newTask.Reminders
+            };
+            tasks.Add(createdTask);
+
+            // NEU: Benachrichtigungen planen
+            await ScheduleNotificationsForTask(createdTask);
         }
 
         HideModal();
@@ -262,56 +240,36 @@
     {
         task.IsCompleted = !task.IsCompleted;
 
+        // Logik wird aufgerufen (löscht Notis bei 'Erledigt', plant sie neu bei 'Offen')
+        await ScheduleNotificationsForTask(task);
+
         await SaveDataToBrowser();
     }
 
     // Variablen für zeiterfassung bei einer drücken und halte Geste auf ein Task
-    private CancellationTokenSource? pressTimer;
     private TodoTask? activeTask = null;
-    private bool isOptionsMenuVisible = false;
     private bool isEditing = false;
-
-    private async Task StartPress(TodoTask task)
-    {
-        pressTimer = new CancellationTokenSource();
-        try
-        {
-            // 600ms warten damit nicht jeder druck als halte Geste erkannt wird
-            await Task.Delay(600, pressTimer.Token);
-
-            // hier wird nur ausgeführt wenn der obere Bedingung erfüllt wurde
-            activeTask = task;
-            isOptionsMenuVisible = true;
-            StateHasChanged();
-        }
-        catch (TaskCanceledException) {/*es wid nichts gemacht wenn der druck kürzer als 600ms war*/}
-    }
-
-    private void CancelPress()
-    {
-        pressTimer?.Cancel(); // Zeiterfassung stoppen wenn der Nutzer finger abhebt
-    }
-
-    private void CloseOptionsMenu() => isOptionsMenuVisible = false;
 
     // Task löschen
     private async Task DeleteTask()
     {
         if (activeTask != null)
         {
-            tasks.Remove(activeTask);
+            // Stoppe alle geplanten Benachrichtigungen im Handy
+            if (activeTask.NotificationIds.Any())
+            {
+                LocalNotificationCenter.Current.Cancel(activeTask.NotificationIds.ToArray());
+            }
 
-            //Löschung der Task speichern
+            tasks.Remove(activeTask);
             await SaveDataToBrowser();
         }
-        CloseOptionsMenu();
     }
 
     // Task bearbeiten
     private void EditTask()
     {
         isEditing = true;
-        CloseOptionsMenu();
 
         // Populate temporary newTask state including deep-copied reminders
         newTask = new TodoTask
@@ -319,7 +277,6 @@
             Name = activeTask!.Name,
             Description = activeTask.Description,
             Priority = activeTask.Priority,
-            Reminder = activeTask.Reminder,
             Reminders = activeTask.Reminders.Select(r => new Reminder
             {
                 Id = r.Id,
@@ -332,41 +289,7 @@
         ShowModal();
     }
 
-    // Task class
-    public class TodoTask
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Description { get; set; } = string.Empty;
-        public string Priority { get; set; } = "-";
-        public string Reminder { get; set; } = "-";
-        public bool IsCompleted { get; set; } = false;
-
-        public List<Reminder> Reminders { get; set; } = new();
-
-        public bool isExpanded { get; set; } = false;
-        public void ToggleExpandedView()
-        {
-            isExpanded = !isExpanded;
-        }
-    }
-
-    //reminder class
-    public class Reminder
-    {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public List<string> Days { get; set; } = new List<string> { "Mo", "Di", "Mi", "Do", "Fr" };
-        public int Hour { get; set; } = 12;
-        public int Minute { get; set; } = 0;
-
-        public string FormattedTime => $"{Hour:D2}:{Minute:D2}";
-
-        public Reminder()
-        {
-            var defaultTime = DateTime.Now.AddHours(1);
-            Hour = defaultTime.Hour;
-            Minute = defaultTime.Minute;
-        }
-    }
+    
 
     private bool isReminderMenuVisible = false;
 
@@ -458,6 +381,88 @@
         }
     }
 
+    // ==========================================
+    // Benachrictigung Automationsystem
+    // ==========================================
+
+    private DayOfWeek GetDayOfWeek(string dayStr)
+    {
+        return dayStr switch
+        {
+            "Mo" => DayOfWeek.Monday,
+            "Di" => DayOfWeek.Tuesday,
+            "Mi" => DayOfWeek.Wednesday,
+            "Do" => DayOfWeek.Thursday,
+            "Fr" => DayOfWeek.Friday,
+            "Sa" => DayOfWeek.Saturday,
+            "So" => DayOfWeek.Sunday,
+            _ => DayOfWeek.Monday
+        };
+    }
+
+    private DateTime GetNextOccurrence(DayOfWeek targetDay, int hour, int minute)
+    {
+        DateTime now = DateTime.Now;
+        DateTime nextDate = now.Date.AddHours(hour).AddMinutes(minute);
+
+        // Wenn die Zeit heute schon vergangen ist oder es der falsche Tag ist, gehe Tage in die Zukunft
+        while (nextDate.DayOfWeek != targetDay || nextDate <= now)
+        {
+            nextDate = nextDate.AddDays(1);
+        }
+        return nextDate;
+    }
+
+    private async Task ScheduleNotificationsForTask(TodoTask task)
+    {
+        // 1. Alte Benachrichtigungen löschen, falls die Aufgabe bearbeitet wird
+        if (task.NotificationIds.Any())
+        {
+            LocalNotificationCenter.Current.Cancel(task.NotificationIds.ToArray());
+            task.NotificationIds.Clear();
+        }
+
+        // 2. Wenn die Aufgabe erledigt ist, planen wir keine neuen Erinnerungen
+        if (task.IsCompleted) 
+        {
+            return;
+        }
+
+        // 3. Rechte prüfen
+        if (!await LocalNotificationCenter.Current.AreNotificationsEnabled())
+        {
+            return;
+        }
+
+        // 4. Für jeden Tag in jeder Erinnerung einen nativen Schedule erstellen
+        foreach (var reminder in task.Reminders)
+        {
+            foreach (var dayStr in reminder.Days)
+            {
+                DayOfWeek targetDay = GetDayOfWeek(dayStr);
+                DateTime nextOccurrence = GetNextOccurrence(targetDay, reminder.Hour, reminder.Minute);
+
+                // Generiere eine zufällige, eindeutige ID für das Betriebssystem
+                int notificationId = new Random().Next(100000, 999999);
+                task.NotificationIds.Add(notificationId);
+
+                var request = new NotificationRequest
+                {
+                    NotificationId = notificationId,
+                    Title = "Erinnerung: " + task.Name,
+                    Description = string.IsNullOrWhiteSpace(task.Description) ? "Es ist Zeit für deine Aufgabe!" : task.Description,
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        NotifyTime = nextOccurrence,
+                        RepeatType = NotificationRepeat.Weekly // Wiederholt sich automatisch jede Woche
+                    }
+                };
+
+                await LocalNotificationCenter.Current.Show(request);
+            }
+        }
+    }
+
     // Zeigt darauf zur welche Task der Erinnerung gehört
     private Reminder? selectedReminder;
 
@@ -496,4 +501,10 @@
     {
         selectedReminder = null;
     }
+
+    private void OpenTaskDetail(string taskId)
+    {
+        Navigation.NavigateTo($"/task/{taskId}");
+    }
+
 }

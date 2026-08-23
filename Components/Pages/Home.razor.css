@@ -8,15 +8,6 @@ input:focus {
 }
 
 /* TASK CARD*/
-.task-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
-    justify-items: center;
-    align-content: center;
-    overflow-y: auto;
-    padding: 5px;
-    padding-bottom: 100px;
-}
 
 .task-card{
     width: 90vw;
@@ -30,6 +21,7 @@ input:focus {
     user-select: none;
     -webkit-user-select: none;
     touch-action: pan-y;
+    cursor: pointer;
 }
 
 .task-card-preview {
@@ -295,22 +287,6 @@ input:focus {
     cursor: pointer;
     padding: 5px;
     width: 13%;
-    user-select: none;
-}
-
-.scroll-wheel {
-    height: 150px;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    user-select: none;
-}
-
-.scroll-item {
-    height: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    scroll-snap-align: center;
     user-select: none;
 }
 
