@@ -37,12 +37,20 @@
       "PackagePath": "staticwebassets\\chevron-down.svg"
     },
     {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\chevron-left.svg",
+      "PackagePath": "staticwebassets\\chevron-left.svg"
+    },
+    {
       "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\chevron-up.svg",
       "PackagePath": "staticwebassets\\chevron-up.svg"
     },
     {
       "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\clock.svg",
       "PackagePath": "staticwebassets\\clock.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\edit.svg",
+      "PackagePath": "staticwebassets\\edit.svg"
     },
     {
       "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\favicon.png",
@@ -75,6 +83,10 @@
     {
       "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\plus.svg",
       "PackagePath": "staticwebassets\\plus.svg"
+    },
+    {
+      "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\red-trash.svg",
+      "PackagePath": "staticwebassets\\red-trash.svg"
     },
     {
       "Id": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\wwwroot\\settings.svg",

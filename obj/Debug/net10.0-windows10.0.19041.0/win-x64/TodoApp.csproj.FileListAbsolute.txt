@@ -612,4 +612,7 @@ C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\obj
 C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\obj\Debug\net10.0-windows10.0.19041.0\win-x64\MultipleQualifiersPerDimensionFound.txt
 C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\Components\Pages\TaskDetail.razor.css
 C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\obj\Debug\net10.0-windows10.0.19041.0\win-x64\scopedcss\Components\Pages\TaskDetail.razor.rz.scp.css
-C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\wwwroot\TodoApp.0mp8xr7197.bundle.scp.css
+C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\wwwroot\chevron-left.svg
+C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\wwwroot\edit.svg
+C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\wwwroot\red-trash.svg
+C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\wwwroot\TodoApp.okexvae68b.bundle.scp.css

@@ -1,23 +1,7 @@
-/* Layout/MainLayout.razor.css */
-.container[b-0xcmv6knwm] {
-    display: grid;
-    grid-template-columns: 1fr;
-    padding-top: env(safe-area-inset-top, 20px);
-}
-
-.upper-band[b-0xcmv6knwm] {
-    background-color: #131215;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 24px;
-    padding-bottom: 10px;
-    padding-top: 5px;
-}
-
 .task-card-grid[b-0xcmv6knwm] {
     display: flex;
     flex-direction: column;
+    width: 100%;
     justify-content: center;
     align-items: center;
 }

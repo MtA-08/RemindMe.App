@@ -4,69 +4,118 @@
 @using System.Text.Json
 @using Plugin.LocalNotification
 
-@if (task == null)
-{
-    <p><em>Aufgabe wird geladen oder existiert nicht...</em></p>
-}
-else
-{
-    @if (!isEditing)
+
+<div class="task-detail-page">
+    @if (task == null)
     {
-        <!-- ANSICHTS-MODUS -->
-        <div class="detail-header">
-            <h2>@task.Name</h2>
-            <span class="priority-badge">Priorität: @task.Priority</span>
-        </div>
-
-        <div class="detail-body">
-            <h4>Beschreibung:</h4>
-            <p>@(string.IsNullOrEmpty(task.Description) ? "Keine Beschreibung vorhanden." : task.Description)</p>
-
-            <h4>Status:</h4>
-            <p>@(task.IsCompleted ? "✅ Erledigt" : "⏳ Offen")</p>
-        </div>
-
-        <div class="action-buttons mt-4">
-            <button class="btn btn-secondary" @onclick="GoBack">Zurück</button>
-            <button class="btn btn-primary" @onclick="StartEditing">Bearbeiten</button>
-            <button class="btn btn-danger" @onclick="DeleteTask">Löschen</button>
+        <div class="loading-state">
+            <p>Aufgabe wird geladen...</p>
         </div>
     }
     else
     {
-        <!-- BEARBEITUNGS-MODUS -->
-        <div class="detail-header">
-            <h3>Aufgabe bearbeiten</h3>
+        <!-- Action Header -->
+        <div class="detail-header-actions">
+            <!-- Zurück-Button (Links oben) -->
+            <button class="round-btn btn-back" @onclick="GoBack" title="Zurück">
+                <img src="chevron-left.svg" />
+            </button>
+
+            <!-- Rechter Button-Bereich (Bearbeiten / Löschen) -->
+            @if (!isEditing)
+            {
+                <div class="right-actions">
+                    <button class="round-btn btn-edit" @onclick="StartEditing" title="Bearbeiten">
+                        <img src="edit.svg" />
+                    </button>
+                    <button class="round-btn btn-delete" @onclick="DeleteTask" title="Löschen">
+                        <img src="red-trash.svg" />
+                    </button>
+                </div>
+            }
+            else
+            {
+                <div class="right-actions">
+                    <button class="round-btn btn-cancel" @onclick="CancelEditing" title="Abbrechen">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="18" y1="6" x2="6" y2="18"></line>
+                            <line x1="6" y1="6" x2="18" y2="18"></line>
+                        </svg>
+                    </button>
+                    <button class="round-btn btn-save" @onclick="SaveEdit" title="Speichern">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </button>
+                </div>
+            }
         </div>
 
-        <div class="detail-body">
-            <div class="input-group mb-3">
-                <label style="color: #888;">Name</label>
-                <input type="text" @bind="editName" maxlength="24" class="text-input-field" />
-            </div>
+        @if (!isEditing)
+        {
+            <!-- ANSICHTS-MODUS -->
+            <div class="detail-body">
+                <!-- Name Block -->
+                <div class="detail-block">
+                    <span class="field-label">NAME</span>
+                    <h1 class="field-value task-title">@task.Name</h1>
+                </div>
 
-            <div class="input-group mb-3">
-                <label style="color: #888;">Beschreibung</label>
-                <input type="text" @bind="editDescription" class="text-input-field" />
-            </div>
+                <!-- Beschreibung Block -->
+                <div class="detail-block">
+                    <span class="field-label">BESCHREIBUNG</span>
+                    <p class="field-value description-text">
+                        @(string.IsNullOrWhiteSpace(task.Description) ? "Keine Beschreibung vorhanden." : task.Description)
+                    </p>
+                </div>
 
-            <div class="input-group mb-3">
-                <label style="color: #888;">Priorität</label>
-                <select @bind="editPriority" class="select-menu">
-                    <option value="-">Keine</option>
-                    <option value="Low">Niedrig</option>
-                    <option value="Mid">Mittel</option>
-                    <option value="High">Hoch</option>
-                </select>
+                <!-- Erinnerungen Block -->
+                <div class="detail-block">
+                    <span class="field-label">ERINNERUNGEN</span>
+                    @if (task.Reminders != null && task.Reminders.Any())
+                    {
+                        <div class="reminders-list">
+                            @foreach (var reminder in task.Reminders)
+                            {
+                                <div class="reminder-card">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <circle cx="12" cy="12" r="10"></circle>
+                                        <polyline points="12 6 12 12 16 14"></polyline>
+                                    </svg>
+                                    <span class="reminder-days">
+                                        @(reminder.Days != null && reminder.Days.Any() ? string.Join(", ", reminder.Days) : "Keine Tage definiert")
+                                    </span>
+                                    <span class="reminder-time">
+                                        @reminder.Hour.ToString("D2"):@reminder.Minute.ToString("D2")
+                                    </span>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <p class="field-value empty-text">Keine Erinnerungen eingestellt.</p>
+                    }
+                </div>
             </div>
-        </div>
+        }
+        else
+        {
+            <!-- BEARBEITUNGS-MODUS -->
+            <div class="detail-body edit-mode">
+                <div class="detail-block">
+                    <label class="field-label">NAME BEARBEITEN</label>
+                    <input type="text" @bind="editName" maxlength="24" class="custom-input" />
+                </div>
 
-        <div class="action-buttons mt-4">
-            <button class="btn btn-secondary" @onclick="CancelEditing">Abbrechen</button>
-            <button class="btn btn-success" @onclick="SaveEdit">Speichern</button>
-        </div>
+                <div class="detail-block">
+                    <label class="field-label">BESCHREIBUNG BEARBEITEN</label>
+                    <textarea @bind="editDescription" class="custom-textarea" rows="4"></textarea>
+                </div>
+            </div>
+        }
     }
-}
+</div>
 
 @code {
     [Parameter]

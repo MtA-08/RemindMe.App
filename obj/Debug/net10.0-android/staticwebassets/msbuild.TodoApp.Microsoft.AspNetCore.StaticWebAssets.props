@@ -120,6 +120,26 @@
       <LastWriteTime>Sun, 16 Aug 2026 11:52:38 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\chevron-down.svg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\chevron-left.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>TodoApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>/</BasePath>
+      <RelativePath>chevron-left.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>anzsnd2qnd</Fingerprint>
+      <Integrity>dg5YMmyzME1aliY8f+nW+k2RhzXs3z5bqZ9eipuZ78s=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <FileLength>265</FileLength>
+      <LastWriteTime>Tue, 25 Aug 2026 13:56:57 GMT</LastWriteTime>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\chevron-left.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\chevron-up.svg'))">
       <SourceType>Package</SourceType>
       <SourceId>TodoApp</SourceId>
@@ -159,6 +179,26 @@
       <FileLength>299</FileLength>
       <LastWriteTime>Wed, 19 Aug 2026 16:48:12 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\clock.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\edit.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>TodoApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>/</BasePath>
+      <RelativePath>edit.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>57icxr182k</Fingerprint>
+      <Integrity>IQQZW8QPeUlWj2KfXb+oLyRRZLRERZU1RMwSJdEwETc=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <FileLength>360</FileLength>
+      <LastWriteTime>Tue, 25 Aug 2026 13:56:57 GMT</LastWriteTime>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\edit.svg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\favicon.png'))">
       <SourceType>Package</SourceType>
@@ -320,6 +360,26 @@
       <LastWriteTime>Sun, 26 Jul 2026 12:27:47 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\plus-circle.svg'))</OriginalItemSpec>
     </StaticWebAsset>
+    <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\red-trash.svg'))">
+      <SourceType>Package</SourceType>
+      <SourceId>TodoApp</SourceId>
+      <ContentRoot>$(MSBuildThisFileDirectory)..\staticwebassets\</ContentRoot>
+      <BasePath>/</BasePath>
+      <RelativePath>red-trash.svg</RelativePath>
+      <AssetKind>All</AssetKind>
+      <AssetMode>All</AssetMode>
+      <AssetRole>Primary</AssetRole>
+      <RelatedAsset></RelatedAsset>
+      <AssetTraitName></AssetTraitName>
+      <AssetTraitValue></AssetTraitValue>
+      <Fingerprint>e9shsf73wm</Fingerprint>
+      <Integrity>UhHWsWubt8dEQP/pqhpjEk7Do8uiJOkp18l8BICnoak=</Integrity>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      <FileLength>443</FileLength>
+      <LastWriteTime>Tue, 25 Aug 2026 14:22:00 GMT</LastWriteTime>
+      <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\red-trash.svg'))</OriginalItemSpec>
+    </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\settings.svg'))">
       <SourceType>Package</SourceType>
       <SourceId>TodoApp</SourceId>
@@ -352,12 +412,12 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName>ScopedCss</AssetTraitName>
       <AssetTraitValue>ApplicationBundle</AssetTraitValue>
-      <Fingerprint>0mp8xr7197</Fingerprint>
-      <Integrity>qPAPlMJn59leJqQos5D3s1a0pyZo+fkYoZ3FAoxwVhc=</Integrity>
+      <Fingerprint>okexvae68b</Fingerprint>
+      <Integrity>CA85Fzmq+EVGFZwN7r8BQNKi3VjJFOo6smW9LxykeW0=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <FileLength>9676</FileLength>
-      <LastWriteTime>Sun, 23 Aug 2026 19:10:26 GMT</LastWriteTime>
+      <FileLength>12794</FileLength>
+      <LastWriteTime>Tue, 25 Aug 2026 14:41:51 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\TodoApp.styles.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\trash.svg'))">
@@ -372,12 +432,12 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName></AssetTraitName>
       <AssetTraitValue></AssetTraitValue>
-      <Fingerprint>eklb65rq20</Fingerprint>
-      <Integrity>EpSNI6cOxJyiPW64kYmxFXKc+OsVgsMJsJ2jSaXX1VY=</Integrity>
+      <Fingerprint>nqtlbjtkur</Fingerprint>
+      <Integrity>z3B/N35x95kv1YY/BGMeMk+p87Sq/laiKD/INrb5724=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       <FileLength>443</FileLength>
-      <LastWriteTime>Wed, 19 Aug 2026 16:50:15 GMT</LastWriteTime>
+      <LastWriteTime>Tue, 25 Aug 2026 13:56:57 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\trash.svg'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\x.svg'))">
