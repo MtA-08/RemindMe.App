@@ -9,140 +9,143 @@
 
 <PageTitle>Homepage</PageTitle>
 
-   
-    <div class="upper-band">
-        <span style="color: blueviolet;"><b>"AppName"</b></span>
+<div class="task-card-page">
+
+    <!-- Header-->
+    <div class="button-header">
+        <button class="round-btn btn-settings" @onclick="" title="Einstellungen">
+            <img src="settings.svg" width="24" height="24" />
+        </button>
+
+        <button class="round-btn btn-add-task" @onclick="ShowModal" title="Task erstellen">
+            <img src="plus.svg" width="24" height="24" />
+        </button>
     </div>
-    <!-- Add Task Button -->
-    <button class="add-task-button"  @onclick="ShowModal">
-        <div>
-            <img src="plus-circle.svg" alt="Add">
-        </div>
-    </button>
 
-    <!-- Task Cards -->
-    @foreach (var task in tasks)
-    {
-    <div class="task-card @(task.IsCompleted ? "task-completed" : "")" @onclick="() => OpenTaskDetail(task.Id)">
-            <div class="task-card-preview">
-                <button class="complete-btn" @onclick="() => ToggleTaskCompletion(task)">
-                    <img src="check.svg" width="20" height="20">
+    <!-- Task Cards Liste -->
+    <div class="task-list">
+        @foreach (var task in tasks)
+        {
+            <div class="task-card @(task.IsCompleted ? "task-completed" : "")" @onclick="() => OpenTaskDetail(task.Id)">
+
+                <div class="task-info">
+                    <p class="task-title">@task.Name</p>
+                </div>
+
+                <button class="complete-btn @(task.IsCompleted ? "is-checked" : "")"
+                        @onclick="() => ToggleTaskCompletion(task)"
+                        @onclick:stopPropagation="true">
+                    @if (task.IsCompleted)
+                    {
+                        <img src="check.svg" width="18" height="18">
+                    }
                 </button>
+            </div>
+        }
+    </div>
 
-                <p class="task-title">@task.Name</p>
+
+    <!-- Task Erstellung Overlay -->
+    @if (isModalVisible)
+    {
+        <div class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-upper-part">
+                    <button class="close-btn" @onclick="HideModal"><img src="x.svg"></button>
+                    <h3>Neues ToDo erstellen</h3>
+                </div>
+
+                <div class="input-group">
+                    <label style="color: #888;">Name</label>
+                    <input type="text" @bind="newTask.Name" maxlength="24" class="text-input-field">
+                </div>
+
+                <div class="input-group">
+                    <label style="color: #888;">Beschreibung</label>
+                    <input type="text" @bind="newTask.Description" class="text-input-field">
+                </div>
+
+                <div class="select-row">
+                    <div class="input-group">
+                        <label style="color: #888;">Erinnerungen</label>
+                        <div class="select-menu" @onclick="ToggleReminderMenu" style="cursor: pointer; display:flex; align-items:center;">
+                            @(newTask.Reminders.Count > 0 ? $"{newTask.Reminders.Count} Erinnerung(en)" : "Hinzufügen...")
+                        </div>
+                    </div>
+                </div>
+
+                <button class="save-btn" @onclick="SaveTask"><img src="check.svg"></button>
             </div>
         </div>
     }
 
-
-<!-- Add task Overlay -->
-@if (isModalVisible)
-{
-    <div class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-upper-part">
-                <button class="close-btn" @onclick="HideModal"><img src="x.svg"></button>
-                <h3>Neues ToDo erstellen</h3>
-            </div>
-            <div class="input-group">
-                <label style="color: #888;">Name</label>
-                <input type="text" @bind="newTask.Name" maxlength="24" class="text-input-field">
-            </div>
-            <div class="input-group">
-                <label style="color: #888;">Beschreibeung</label>
-                <input type="text" @bind="newTask.Description" class="text-input-field">
-            </div>
-            <div class="select-row">
-                <div class="input-group">
-                    <label style="color: #888;">Priorität</label>
-                    <select @bind="newTask.Priority" class="select-menu">
-                        <option value="-">Keine</option>
-                        <option value="Low">Niedrig</option>
-                        <option value="Mid">Mittel</option>
-                        <option value="High">Hoch</option>
-                    </select>
+    <!-- Erinnerung Menü Overlay-->
+    @if (isReminderMenuVisible)
+    {
+        <div class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-upper-part">
+                    <button class="close-btn" @onclick="ToggleReminderMenu"><img src="x.svg"></button>
+                    <h3>Erinnerungen erstellen</h3>
                 </div>
-                <div class="input-group">
-                    <label style="color: #888;">Erinnerungen</label>
-                    <div class="select-menu" @onclick="ToggleReminderMenu" style="cursor: pointer;">
-                        <!-- Zeigt an, wie viele Erinnerungen erstellt wurden -->
-                        @(newTask.Reminders.Count > 0 ? $"{newTask.Reminders.Count} Erinnerung(en) eingestellt" : "Erinnerungen hinzufügen...")
-                    </div>
-                </div>
-            </div>
-            <button class="save-btn" @onclick="SaveTask"><img src="check.svg"></button>
-        </div>
-    </div>
-}
-
-<!-- Erinnerung Menü Overlay-->
-@if (isReminderMenuVisible)
-{
-    <div class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-upper-part">
-                <button class="close-btn" @onclick="ToggleReminderMenu"><img src="x.svg"></button>
-                <h3>Erinnerungen erstellen</h3>
-            </div>
-            @if (notificationsEnabled)
-            {
-                @foreach (var Reminder in newTask.Reminders)
+                @if (notificationsEnabled)
                 {
-                    <div class="set-reminder-menu">
-                        <label>Erinnerung #1</label>
-                        <div class="reminder-menu-day-picker">
-                            @foreach (var day in new[] { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" })
-                            {
-                                <p class="@(Reminder.Days.Contains(day) ? "selected-day" : "")" 
-                                @onclick="() => ToggleDay(Reminder, day)">
-                                    @day
-                                </p>
-                            }
-                        </div>
-                        <div style="display: flex;">
-                            <div class="reminder-menu-time-picker" @onclick="() => EditReminderTime(Reminder)">
-                                <img src="clock.svg" style="padding-right: 8px;"><p>@Reminder.FormattedTime</p>
+                    @foreach (var Reminder in newTask.Reminders)
+                    {
+                        <div class="set-reminder-menu">
+                            <label>Erinnerung #1</label>
+                            <div class="reminder-menu-day-picker">
+                                @foreach (var day in new[] { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" })
+                                {
+                                    <p class="@(Reminder.Days.Contains(day) ? "selected-day" : "")"
+                                       @onclick="() => ToggleDay(Reminder, day)">
+                                        @day
+                                    </p>
+                                }
                             </div>
-                            <div class="reminder-menu-delete" @onclick="() => RemoveReminder(Reminder)">
-                                <img src="trash.svg">
+                            <div style="display: flex;">
+                                <div class="reminder-menu-time-picker" @onclick="() => EditReminderTime(Reminder)">
+                                    <img src="clock.svg" style="padding-right: 8px;"><p>@Reminder.FormattedTime</p>
+                                </div>
+                                <div class="reminder-menu-delete" @onclick="() => RemoveReminder(Reminder)">
+                                    <img src="trash.svg">
+                                </div>
                             </div>
                         </div>
+                    }
+
+                    <div class="add-remider-button" @onclick="AddNewReminder">
+                        <img src="plus.svg" style="padding-right: 5px;"><p>Erinnerung hinzufügen</p>
+                    </div>
+                    <div class="add-remider-button" @onclick='() => SendNotification("Titel", "Text in Benachrichtigung")'>
+                        <img src="plus.svg" style="padding-right: 5px;"><p>Noti senden</p>
                     </div>
                 }
-
-                <div class="add-remider-button" @onclick="AddNewReminder">
-                    <img src="plus.svg" style="padding-right: 5px;"><p>Erinnerung hinzufügen</p>
-                </div>
-                <div class="add-remider-button" @onclick='() => SendNotification("Titel", "Text in Benachrichtigung")'>
-                    <img src="plus.svg" style="padding-right: 5px;"><p>Noti senden</p>
-                </div>
-            }
-            else
-            {
-                <div class="notification-permission-query">
-                    <button class="ask-permission-button" @onclick="RequestNotificationPermission">Benachrichtigungen erlauben</button>
-                </div>
-            }
-        </div>
-    </div>
-}
-
-<!-- Erinnerung Zeit wähler Overlay -->
-@if (selectedReminder != null)
-{
-    <div class="modal-overlay">
-        <div class="modal-content">
-            <div class="modal-upper-part">
-                <button class="close-btn" @onclick="CloseTimePicker"><img src="x.svg"></button>
-                <h3>Zeit auswählen:</h3>
+                else
+                {
+                    <div class="notification-permission-query">
+                        <button class="ask-permission-button" @onclick="RequestNotificationPermission">Benachrichtigungen erlauben</button>
+                    </div>
+                }
             </div>
-            <input type="time" class="time-input" @bind="TempTime" />
-
-                <button class="save-btn" @onclick="SaveTime">Fertig</button>
-            
         </div>
-    </div>
-}
+    }
+
+    <!-- Zeit wähler Overlay -->
+    @if (selectedReminder != null)
+    {
+        <div class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-upper-part">
+                    <button class="close-btn" @onclick="CloseTimePicker"><img src="x.svg"></button>
+                    <h3>Zeit auswählen:</h3>
+                </div>
+                <input type="time" class="time-input reminder-menu-time-picker" @bind="TempTime" />
+                <button class="save-btn" @onclick="SaveTime">Fertig</button>
+            </div>
+        </div>
+    }
+</div>
 
 @code {
     // List for saved tasks

@@ -2,342 +2,316 @@ button[b-gg1ak8a4hz], a[b-gg1ak8a4hz], input[b-gg1ak8a4hz], select[b-gg1ak8a4hz]
     -webkit-tap-highlight-color: transparent;
 }
 
-input:focus[b-gg1ak8a4hz] {
-    outline: 2px solid #0066cc;
-    outline-offset: 2px;
+    input:focus[b-gg1ak8a4hz] {
+        outline: none;
+    }
+
+/* Haupt-Container - Zentriert auf 92% Bildschirmbreite */
+.task-card-page[b-gg1ak8a4hz] {
+    width: 92%;
+    margin: 0 auto;
+    padding: 16px 0;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
-.upper-band[b-gg1ak8a4hz] {
-    background-color: #131215;
+/* Header mit runden Buttons */
+.button-header[b-gg1ak8a4hz] {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    font-size: 24px;
-    padding-bottom: 10px;
-    padding-top: 5px;
-}
-
-/* TASK CARD*/
-
-.task-card[b-gg1ak8a4hz]{
-    width: 90vw;
-    height: fit-content;
-    color: #d3d3d3;
-    background-color: #08080a;
-    padding: 20px;
-    border-radius: 10px;
-    align-items: center;
-    margin: 5px;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: pan-y;
-    cursor: pointer;
-}
-
-.task-card-preview[b-gg1ak8a4hz] {
-    display: flex;
-    align-items: center;
+    margin-bottom: 24px;
     width: 100%;
 }
 
-.header-controls[b-gg1ak8a4hz] {
+.round-btn[b-gg1ak8a4hz] {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    border: none;
     display: flex;
     align-items: center;
-    gap: 10px; /* Adds space between the color band and the arrow button */
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
-.task-card p[b-gg1ak8a4hz] {
-    margin: 0 !important;
-    padding: 0 !important;
-    line-height: normal;
+    .round-btn:active[b-gg1ak8a4hz] {
+        transform: scale(0.95);
+    }
+
+.btn-settings[b-gg1ak8a4hz] {
+    background-color: #26262a;
+    color: #FFFFFF;
 }
 
-.task-title[b-gg1ak8a4hz]{
-    max-width: 180px;
+.btn-add-task[b-gg1ak8a4hz] {
+    background-color: rgba(48, 209, 88, 0.2);
+    color: #30d158;
+}
+
+/* --- TASK CARDS --- */
+.task-list[b-gg1ak8a4hz] {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.task-card[b-gg1ak8a4hz] {
+    background-color: #1c1c1e;
+    border: 1px solid #2c2c2e;
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Text links, Button rechts */
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+    .task-card:hover[b-gg1ak8a4hz] {
+        transform: scale(1.01);
+    }
+    
+    .task-card:active[b-gg1ak8a4hz] {
+        transform: scale(0.98);
+    }
+
+.task-info[b-gg1ak8a4hz] {
+    flex-grow: 1;
+    overflow: hidden;
+    margin-right: 16px;
+}
+
+.task-title[b-gg1ak8a4hz] {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    margin: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    flex-grow: 1;
-}
-
-.complete-btn[b-gg1ak8a4hz] {
-    background-color: #131215;
-    border: 1px soild #333336;
-    border-radius: 10px;
-    padding: 3px;
-    cursor: pointer;
-    margin-right: 10px;
-    display: flex;
-    align-items: center;
-}
-
-.task-completed[b-gg1ak8a4hz] {
-    opacity: 0.5;
 }
 
 .task-completed .task-title[b-gg1ak8a4hz] {
     text-decoration: line-through;
-    color: #888;
+    color: #888888;
 }
 
-.shavron-up-down[b-gg1ak8a4hz]{
+/* Der neue runde Check-Button rechts */
+.complete-btn[b-gg1ak8a4hz] {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #44444a; /* Kreis-Rand im offenen Zustand */
     background-color: transparent;
-    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
+    transition: all 0.2s ease;
+    flex-shrink: 0; /* Verhindert, dass der Button zusammengequetscht wird */
     padding: 0;
 }
 
-.divider[b-gg1ak8a4hz] {
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
+    .complete-btn.is-checked[b-gg1ak8a4hz] {
+        background-color: rgba(48, 209, 88, 0.2); /* Sanftes Grün wie beim Plus-Button */
+        border-color: #30d158;
+    }
 
-/* ADD TASK BUTTON */
-.add-task-button[b-gg1ak8a4hz] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 40px;
-    background-color: #1d4f30;
-    border: 1px solid #193f29;
-    border-radius: 10px;
-    margin: 5px;
-    cursor: pointer; 
-}
-
-/* MODAL OVERLAY*/
-
+/* --- MODALS (Overlays) --- */
 .modal-overlay[b-gg1ak8a4hz] {
     display: flex;
-    position: fixed; /* Löst das Element vom Rest der Seite */
+    position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.6); /* Schwarz mit 60% Deckkraft */
-    z-index: 2000; /* Muss höher sein als dein Menü (z-index: 1000) */
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
     justify-content: center;
     align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .modal-content[b-gg1ak8a4hz] {
-    background-color: #121217;
-    color: #d3d3d3;
-    padding: 15px;
-    border-radius: 10px;
+    background-color: #1c1c1e;
+    border: 1px solid #2c2c2e;
+    color: #FFFFFF;
+    padding: 20px;
+    border-radius: 16px;
     width: 100%;
     max-width: 400px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
-    align-items: center;
+    gap: 16px;
 }
 
-/*ADD TASK OVERLAY CONTENT*/
-
-.modal-upper-part[b-gg1ak8a4hz]{
+.modal-upper-part[b-gg1ak8a4hz] {
     width: 100%;
     display: flex;
     align-items: center;
 }
 
-.select-menu[b-gg1ak8a4hz] {
-    border-radius: 10px;
-    font-size: 15px;
-    background-color: #0f0f0f;
-    border: 1px solid #1e1e1e;
-    height: 42px;
-    color: white;
-    padding: 10px;
-    cursor: pointer;
-}
-
-.save-btn[b-gg1ak8a4hz] {
-    margin: 5px;
-    padding: 10px;
-    display: inline-block;
-    background-color: #1d4f30;
-    border: 1px solid #193f29;
-    border-radius: 10px;
-    color: #d3d3d3;
-    text-align: center;
-    cursor: pointer;
-    width: 100%;
-}
+    .modal-upper-part h3[b-gg1ak8a4hz] {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
 
 .close-btn[b-gg1ak8a4hz] {
     border: none;
     background-color: transparent;
     cursor: pointer;
     margin-right: 10px;
-}
-
-.text-input-field[b-gg1ak8a4hz] {
-    border-radius: 10px;
-    font-size: 20px;
-    background-color: #0f0f0f;
-    border: 1px solid #1e1e1e;
-    height: 42px;
-    color: white;
-    padding: 10px;
-}
-
-.input-group[b-gg1ak8a4hz]{
+    padding: 0;
     display: flex;
-    width: 100%;
+}
+
+/* Input Felder */
+.input-group[b-gg1ak8a4hz] {
+    display: flex;
     flex-direction: column;
-    gap: 5px;
-    text-align: left;
-}
-
-.input-group label[b-gg1ak8a4hz]{
-    font-size: 14px;
-    color: #d3d3d3;
-}
-
-.select-row[b-gg1ak8a4hz]{
-    display: flex;
-    gap: 10px;
+    gap: 6px;
     width: 100%;
 }
 
-.select-row .input-group[b-gg1ak8a4hz]{
-    flex: 1;
+    .input-group label[b-gg1ak8a4hz] {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #888888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+.text-input-field[b-gg1ak8a4hz], .select-menu[b-gg1ak8a4hz] {
+    width: 100%;
+    background-color: #08080a;
+    border: 1px solid #2c2c2e;
+    border-radius: 10px;
+    color: #FFFFFF;
+    padding: 12px 14px;
+    font-size: 1rem;
+    box-sizing: border-box;
 }
 
-/*REMINDER OVERALY CONTENT*/
+    .text-input-field:focus[b-gg1ak8a4hz], .select-menu:focus[b-gg1ak8a4hz] {
+        border-color: #44444a;
+    }
+
+.select-row[b-gg1ak8a4hz] {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+}
+
+.save-btn[b-gg1ak8a4hz] {
+    background-color: rgba(48, 209, 88, 0.2);
+    color: #30d158;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+}
+
+/* Erinnerungs-Menü */
+.set-reminder-menu[b-gg1ak8a4hz] {
+    background-color: #08080A;
+    border: 1px solid #2c2c2e;
+    border-radius: 10px;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.reminder-menu-day-picker[b-gg1ak8a4hz] {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    margin-top: 8px;
+}
+
+    .reminder-menu-day-picker p[b-gg1ak8a4hz] {
+        border: 1px solid #2c2c2e;
+        border-radius: 8px;
+        padding: 8px 0;
+        margin: 0;
+        flex: 1;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+        font-size: 0.85rem;
+        margin-right: 4px;
+    }
+
+        .reminder-menu-day-picker p:active[b-gg1ak8a4hz]{
+                transform: scale(0.95);
+            }
+
+        .reminder-menu-day-picker p:last-child[b-gg1ak8a4hz] {
+            margin-right: 0;
+        }
+
+.selected-day[b-gg1ak8a4hz] {
+    background-color: rgba(48, 209, 88, 0.2);
+    color: #30d158;
+    border-color: #30d158 !important;
+}
+
+.reminder-menu-time-picker[b-gg1ak8a4hz], .reminder-menu-delete[b-gg1ak8a4hz] {
+    background-color: #1c1c1e;
+    border: 1px solid #2c2c2e;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.reminder-menu-time-picker[b-gg1ak8a4hz] {
+    flex-grow: 1;
+    margin-right: 8px;
+}
+
+    .reminder-menu-time-picker p[b-gg1ak8a4hz] {
+        margin: 0;
+    }
 
 .add-remider-button[b-gg1ak8a4hz] {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    background-color: #08080A;
-    border: 1px solid #2c2c2f;
+    background-color: #08080a;
+    border: 1px solid #2c2c2e;
     border-radius: 10px;
-    margin: 5px;
+    padding: 12px;
     cursor: pointer;
-    padding: 5px;
     user-select: none;
+    box-sizing: border-box;
 }
 
-.set-reminder-menu[b-gg1ak8a4hz] {
-    background-color: #08080A;
-    border: 1px solid #2c2c2f;
-    border-radius: 10px;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-}
-
-.reminder-menu-day-picker[b-gg1ak8a4hz] {
-    display: flex;
-    padding: 5px;
-    justify-content: center;
-    align-items: center;
-}
-
-    .reminder-menu-day-picker p[b-gg1ak8a4hz] {
-        border: 1px solid #2c2c2f;
-        padding: 7px;
-        margin: 2px;
-        border-radius: 10px;
-        justify-content: center;
-        text-align: center;
-        cursor: pointer;
-        user-select: none;
-    }
-
-    .selected-day[b-gg1ak8a4hz] {
-        border: 1px solid #2c2c2f;
-        padding: 7px;
-        margin: 2px;
-        border-radius: 10px;
-        justify-content: center;
-        text-align: center;
-        cursor: pointer;
-        background-color: #193f29;
-        user-select: none;
-    }
-
-.reminder-menu-time-picker[b-gg1ak8a4hz] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #08080A;
-    border: 1px solid #2c2c2f;
-    border-radius: 10px;
-    margin: 5px;
-    cursor: pointer;
-    padding: 5px;
-    width: 100%;
-    user-select: none;
-}
-
-.reminder-menu-delete[b-gg1ak8a4hz] {
-    justify-content: center;
-    align-items: center;
-    background-color: #08080A;
-    border: 1px solid #2c2c2f;
-    border-radius: 10px;
-    margin: 5px;
-    cursor: pointer;
-    padding: 5px;
-    width: 13%;
-    user-select: none;
-}
-
-.notification-permission-query[b-gg1ak8a4hz]{
-    display: flex;
-    height: 100%;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-}
-
-.ask-permission-button[b-gg1ak8a4hz] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #08080A;
-    border: 1px solid #2c2c2f;
-    border-radius: 10px;
-    margin: 5px;
-    padding: 5px;
-    cursor: pointer;
-    padding: 5px;
-    user-select: none;
-    color: white;
-}
-
-/* Uhrzeit wähler */
-
-.wheel-container[b-gg1ak8a4hz] {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 15px;
-    height: 160px;
-    position: relative;
-    overflow: hidden;
-}
-
-/* Aktuell ausgewählte zeit zentrieren */
+/* Time Picker */
 .time-input[b-gg1ak8a4hz] {
-    font-size: 2rem;
-    padding: 10px;
+    font-size: 2.5rem;
+    padding: 12px;
     text-align: center;
-    border-radius: 8px;
-    border: 1px solid #2c2c2f;
+    border-radius: 10px;
+    border: 1px solid #2c2c2e;
     background-color: #08080A;
     color: white;
+    width: 100%;
+    box-sizing: border-box;
 }
-
-input[type="time"][b-gg1ak8a4hz]::-webkit-calendar-picker-indicator {
-    filter: invert(1);
-    transform: scale(1.5);
-    cursor: pointer;
-}
-
-/**/

@@ -1,9 +1,9 @@
-/* Haupt-Container & Layout */
 .task-detail-page {
-    width: 100%;
-    padding: 20px;
-    color: #FFFFFF;
+    width: 92%;
     margin: 0 auto;
+    padding: 16px 0;
+    box-sizing: border-box;
+    color: #FFFFFF;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
@@ -13,12 +13,13 @@
     padding-top: 40px;
 }
 
-/* Header & Runde Buttons */
+/* Header */
 .detail-header-actions {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 24px;
+    width: 100%;
 }
 
 .right-actions {
@@ -35,49 +36,36 @@
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    transition: transform 0.1s ease;
 }
 
     .round-btn:active {
         transform: scale(0.95);
     }
 
-.btn-back {
-    background-color: #26262a;
-    color: #FFFFFF;
-}
-
-.btn-edit {
+.btn-back, .btn-edit {
     background-color: #26262a;
     color: #FFFFFF;
 }
 
 .btn-delete {
-    background-color: #421c1d;
+    background-color: rgba(255, 69, 58, 0.2);
     color: #ff453a;
 }
 
-.btn-cancel {
-    background-color: #26262a;
-    color: #FFFFFF;
-}
-
-.btn-save {
-    background-color: #193823;
-    color: #30d158;
-}
-
-/* Inhalt & Blöcke */
+/* Info Blöcke */
 .detail-body {
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 24px;
+    width: 100%;
 }
 
 .detail-block {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+    width: 100%;
 }
 
 .field-label {
@@ -92,6 +80,7 @@
 .field-value {
     color: #FFFFFF;
     margin: 0;
+    width: 100%;
 }
 
 .task-title {
@@ -111,6 +100,7 @@
     line-height: 1.5;
     color: #e1e1e6;
     white-space: pre-wrap;
+    word-break: break-word;
 }
 
 .empty-text {
@@ -118,7 +108,7 @@
     font-size: 0.95rem;
 }
 
-/* Erinnerungen Liste */
+/* Erinnerungen Liste (Ansicht) */
 .reminders-list {
     display: flex;
     flex-direction: column;
@@ -139,7 +129,6 @@
 }
 
 .reminder-days {
-    color: #FFFFFF;
     font-size: 0.95rem;
     flex-grow: 1;
 }
@@ -150,27 +139,206 @@
     font-weight: 600;
 }
 
-/* Formular-Elemente für den Bearbeitungsmodus */
-.custom-input,
-.custom-select,
-.custom-textarea {
-    width: 100%;
+/* --- MODALS (Overlays) --- */
+.modal-overlay {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 2000;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.modal-content {
     background-color: #1c1c1e;
     border: 1px solid #2c2c2e;
-    border-radius: 12px;
+    color: #FFFFFF;
+    padding: 20px;
+    border-radius: 16px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.modal-upper-part {
+    width: 100%;
+    display: flex;
+    align-items: center;
+}
+
+    .modal-upper-part h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+.close-btn {
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+    margin-right: 10px;
+    padding: 0;
+    display: flex;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    width: 100%;
+}
+
+    .input-group label {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: #888888;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+.text-input-field, .select-menu {
+    width: 100%;
+    background-color: #08080a;
+    border: 1px solid #2c2c2e;
+    border-radius: 10px;
     color: #FFFFFF;
     padding: 12px 14px;
     font-size: 1rem;
     box-sizing: border-box;
-    outline: none;
 }
 
-    .custom-input:focus,
-    .custom-select:focus,
-    .custom-textarea:focus {
+    .text-input-field:focus, .select-menu:focus {
         border-color: #44444a;
+        outline: none;
     }
 
-.custom-textarea {
-    resize: vertical;
+.select-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
 }
+
+.save-btn {
+    background-color: rgba(48, 209, 88, 0.2);
+    color: #30d158;
+    border: none;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 8px;
+}
+
+/* Erinnerungs-Menü Elemente */
+.set-reminder-menu {
+    background-color: #08080A;
+    border: 1px solid #2c2c2e;
+    border-radius: 10px;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.reminder-menu-day-picker {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    margin-top: 8px;
+}
+
+    .reminder-menu-day-picker p {
+        border: 1px solid #2c2c2e;
+        border-radius: 8px;
+        padding: 8px 0;
+        margin: 0;
+        flex: 1;
+        text-align: center;
+        cursor: pointer;
+        user-select: none;
+        font-size: 0.85rem;
+        margin-right: 4px;
+    }
+
+        .reminder-menu-day-picker p:last-child {
+            margin-right: 0;
+        }
+
+.selected-day {
+    background-color: rgba(48, 209, 88, 0.2);
+    color: #30d158;
+    border-color: #30d158 !important;
+}
+
+.reminder-menu-time-picker, .reminder-menu-delete {
+    background-color: #1c1c1e;
+    border: 1px solid #2c2c2e;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.reminder-menu-time-picker {
+    flex-grow: 1;
+    margin-right: 8px;
+}
+
+    .reminder-menu-time-picker p {
+        margin: 0;
+    }
+
+.add-remider-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: #08080a;
+    border: 1px solid #2c2c2e;
+    border-radius: 10px;
+    padding: 12px;
+    cursor: pointer;
+    user-select: none;
+    box-sizing: border-box;
+}
+
+.ask-permission-button {
+    background-color: #08080A;
+    border: 1px solid #2c2c2e;
+    border-radius: 10px;
+    padding: 10px;
+    cursor: pointer;
+    color: white;
+    width: 100%;
+}
+
+/* Time Picker */
+.time-input {
+    font-size: 2.5rem;
+    padding: 12px;
+    text-align: center;
+    border-radius: 10px;
+    border: 1px solid #2c2c2e;
+    background-color: #08080A;
+    color: white;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+    transform: scale(1.5);
+    cursor: pointer;

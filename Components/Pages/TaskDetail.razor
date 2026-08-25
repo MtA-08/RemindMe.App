@@ -3,7 +3,7 @@
 @inject NavigationManager NavManager
 @using System.Text.Json
 @using Plugin.LocalNotification
-
+@using Plugin.LocalNotification.Core.Models
 
 <div class="task-detail-page">
     @if (task == null)
@@ -16,101 +16,169 @@
     {
         <!-- Action Header -->
         <div class="detail-header-actions">
-            <!-- Zurück-Button (Links oben) -->
+            <!-- Zurück-Button -->
             <button class="round-btn btn-back" @onclick="GoBack" title="Zurück">
-                <img src="chevron-left.svg" />
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
             </button>
 
             <!-- Rechter Button-Bereich (Bearbeiten / Löschen) -->
-            @if (!isEditing)
-            {
-                <div class="right-actions">
-                    <button class="round-btn btn-edit" @onclick="StartEditing" title="Bearbeiten">
-                        <img src="edit.svg" />
-                    </button>
-                    <button class="round-btn btn-delete" @onclick="DeleteTask" title="Löschen">
-                        <img src="red-trash.svg" />
-                    </button>
-                </div>
-            }
-            else
-            {
-                <div class="right-actions">
-                    <button class="round-btn btn-cancel" @onclick="CancelEditing" title="Abbrechen">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <line x1="18" y1="6" x2="6" y2="18"></line>
-                            <line x1="6" y1="6" x2="18" y2="18"></line>
-                        </svg>
-                    </button>
-                    <button class="round-btn btn-save" @onclick="SaveEdit" title="Speichern">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </button>
-                </div>
-            }
+            <div class="right-actions">
+                <button class="round-btn btn-edit" @onclick="OpenEditModal" title="Bearbeiten">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                </button>
+                <button class="round-btn btn-delete" @onclick="DeleteTask" title="Löschen">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                    </svg>
+                </button>
+            </div>
         </div>
 
-        @if (!isEditing)
+        <!-- ANSICHTS-MODUS -->
+        <div class="detail-body">
+            <div class="detail-block">
+                <span class="field-label">NAME</span>
+                <h1 class="field-value task-title">@task.Name</h1>
+            </div>
+
+            <div class="detail-block">
+                <span class="field-label">PRIORITÄT</span>
+                <div class="field-value priority-text">@GetPriorityText(task.Priority)</div>
+            </div>
+
+            <div class="detail-block">
+                <span class="field-label">BESCHREIBUNG</span>
+                <p class="field-value description-text">
+                    @(string.IsNullOrWhiteSpace(task.Description) ? "Keine Beschreibung vorhanden." : task.Description)
+                </p>
+            </div>
+
+            <div class="detail-block">
+                <span class="field-label">ERINNERUNGEN</span>
+                @if (task.Reminders != null && task.Reminders.Any())
+                {
+                    <div class="reminders-list">
+                        @foreach (var reminder in task.Reminders)
+                        {
+                            <div class="reminder-card">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span class="reminder-days">
+                                    @(reminder.Days != null && reminder.Days.Any() ? string.Join(", ", reminder.Days) : "Keine Tage")
+                                </span>
+                                <span class="reminder-time">
+                                    @reminder.Hour.ToString("D2"):@reminder.Minute.ToString("D2")
+                                </span>
+                            </div>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <p class="field-value empty-text">Keine Erinnerungen eingestellt.</p>
+                }
+            </div>
+        </div>
+
+        <!-- Bearbeiten Modal -->
+        @if (isModalVisible)
         {
-            <!-- ANSICHTS-MODUS -->
-            <div class="detail-body">
-                <!-- Name Block -->
-                <div class="detail-block">
-                    <span class="field-label">NAME</span>
-                    <h1 class="field-value task-title">@task.Name</h1>
+            <div class="modal-overlay">
+                <div class="modal-content">
+                    <div class="modal-upper-part">
+                        <button class="close-btn" @onclick="HideModal"><img src="x.svg"></button>
+                        <h3>Task bearbeiten</h3>
+                    </div>
+                    <div class="input-group">
+                        <label>Name</label>
+                        <input type="text" @bind="newTask.Name" maxlength="24" class="text-input-field">
+                    </div>
+                    <div class="input-group">
+                        <label>Beschreibung</label>
+                        <input type="text" @bind="newTask.Description" class="text-input-field">
+                    </div>
+                    <div class="select-row">
+                        <div class="input-group">
+                            <label>Erinnerungen</label>
+                            <div class="select-menu" @onclick="ToggleReminderMenu" style="cursor: pointer; display:flex; align-items:center;">
+                                @(newTask.Reminders.Count > 0 ? $"{newTask.Reminders.Count} Erinnerung(en)" : "Hinzufügen...")
+                            </div>
+                        </div>
+                    </div>
+                    <button class="save-btn" @onclick="SaveEdit"><img src="check.svg"></button>
                 </div>
+            </div>
+        }
 
-                <!-- Beschreibung Block -->
-                <div class="detail-block">
-                    <span class="field-label">BESCHREIBUNG</span>
-                    <p class="field-value description-text">
-                        @(string.IsNullOrWhiteSpace(task.Description) ? "Keine Beschreibung vorhanden." : task.Description)
-                    </p>
-                </div>
-
-                <!-- Erinnerungen Block -->
-                <div class="detail-block">
-                    <span class="field-label">ERINNERUNGEN</span>
-                    @if (task.Reminders != null && task.Reminders.Any())
+        <!-- Erinnerungs-Menü Modal -->
+        @if (isReminderMenuVisible)
+        {
+            <div class="modal-overlay">
+                <div class="modal-content">
+                    <div class="modal-upper-part">
+                        <button class="close-btn" @onclick="ToggleReminderMenu"><img src="x.svg"></button>
+                        <h3>Erinnerungen erstellen</h3>
+                    </div>
+                    @if (notificationsEnabled)
                     {
-                        <div class="reminders-list">
-                            @foreach (var reminder in task.Reminders)
-                            {
-                                <div class="reminder-card">
-                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <circle cx="12" cy="12" r="10"></circle>
-                                        <polyline points="12 6 12 12 16 14"></polyline>
-                                    </svg>
-                                    <span class="reminder-days">
-                                        @(reminder.Days != null && reminder.Days.Any() ? string.Join(", ", reminder.Days) : "Keine Tage definiert")
-                                    </span>
-                                    <span class="reminder-time">
-                                        @reminder.Hour.ToString("D2"):@reminder.Minute.ToString("D2")
-                                    </span>
+                        @foreach (var Reminder in newTask.Reminders)
+                        {
+                            <div class="set-reminder-menu">
+                                <div class="reminder-menu-day-picker">
+                                    @foreach (var day in new[] { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" })
+                                    {
+                                        <p class="@(Reminder.Days.Contains(day) ? "selected-day" : "")"
+                                           @onclick="() => ToggleDay(Reminder, day)">
+                                            @day
+                                        </p>
+                                    }
                                 </div>
-                            }
+                                <div style="display: flex;">
+                                    <div class="reminder-menu-time-picker" @onclick="() => EditReminderTime(Reminder)">
+                                        <img src="clock.svg" style="padding-right: 8px;"><p>@Reminder.FormattedTime</p>
+                                    </div>
+                                    <div class="reminder-menu-delete" @onclick="() => RemoveReminder(Reminder)">
+                                        <img src="trash.svg">
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        <div class="add-remider-button" @onclick="AddNewReminder">
+                            <img src="plus.svg" style="padding-right: 5px;"><p>Erinnerung hinzufügen</p>
                         </div>
                     }
                     else
                     {
-                        <p class="field-value empty-text">Keine Erinnerungen eingestellt.</p>
+                        <div class="notification-permission-query">
+                            <button class="ask-permission-button" @onclick="RequestNotificationPermission">Benachrichtigungen erlauben</button>
+                        </div>
                     }
                 </div>
             </div>
         }
-        else
-        {
-            <!-- BEARBEITUNGS-MODUS -->
-            <div class="detail-body edit-mode">
-                <div class="detail-block">
-                    <label class="field-label">NAME BEARBEITEN</label>
-                    <input type="text" @bind="editName" maxlength="24" class="custom-input" />
-                </div>
 
-                <div class="detail-block">
-                    <label class="field-label">BESCHREIBUNG BEARBEITEN</label>
-                    <textarea @bind="editDescription" class="custom-textarea" rows="4"></textarea>
+        <!-- Zeitauswahl Modal -->
+        @if (selectedReminder != null)
+        {
+            <div class="modal-overlay">
+                <div class="modal-content">
+                    <div class="modal-upper-part">
+                        <button class="close-btn" @onclick="CloseTimePicker"><img src="x.svg"></button>
+                        <h3>Zeit auswählen:</h3>
+                    </div>
+                    <input type="time" class="time-input" @bind="TempTime" />
+                    <button class="save-btn" @onclick="SaveTime">Fertig</button>
                 </div>
             </div>
         }
@@ -121,20 +189,22 @@
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
-    private TodoTask? task;
     private List<TodoTask> tasks = new();
+    private TodoTask? task;
 
-    // Variablen für den Bearbeitungsmodus
-    private bool isEditing = false;
-    private string editName = string.Empty;
-    private string editDescription = string.Empty;
-    private string editPriority = "-";
+    // Für das Modal
+    private TodoTask newTask = new TodoTask();
+    private bool isModalVisible = false;
+    private bool isReminderMenuVisible = false;
+    private bool notificationsEnabled = false;
+
+    // Für den TimePicker
+    private Reminder? selectedReminder;
+    private TimeOnly TempTime;
 
     protected override async Task OnInitializedAsync()
     {
-        // Aufgaben aus dem LocalStorage laden (Key: "myTasks")
         var json = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "myTasks");
-
         if (!string.IsNullOrEmpty(json))
         {
             tasks = JsonSerializer.Deserialize<List<TodoTask>>(json) ?? new();
@@ -142,42 +212,82 @@
         }
     }
 
-    private void StartEditing()
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (task != null)
+        if (firstRender)
         {
-            // Aktuelle Werte in die temporären Edit-Variablen laden
-            editName = task.Name;
-            editDescription = task.Description;
-            editPriority = task.Priority;
-            isEditing = true;
+            notificationsEnabled = await LocalNotificationCenter.Current.AreNotificationsEnabled();
+            StateHasChanged();
         }
     }
 
-    private void CancelEditing()
+    private string GetPriorityText(string priority) => priority switch
     {
-        isEditing = false;
+        "Low" => "Niedrig",
+        "Mid" => "Mittel",
+        "High" => "Hoch",
+        _ => "Keine"
+    };
+
+    private void GoBack()
+    {
+        NavManager.NavigateTo("/");
+    }
+
+    // ==========================================
+    // MODAL LOGIK
+    // ==========================================
+
+    private void OpenEditModal()
+    {
+        if (task != null)
+        {
+            // Erstelle eine tiefe Kopie für das Modal (damit Abbrechen funktioniert)
+            newTask = new TodoTask
+            {
+                Name = task.Name,
+                Description = task.Description,
+                Priority = task.Priority,
+                Reminders = task.Reminders.Select(r => new Reminder
+                {
+                    Id = r.Id,
+                    Days = new List<string>(r.Days),
+                    Hour = r.Hour,
+                    Minute = r.Minute
+                }).ToList()
+            };
+            isModalVisible = true;
+        }
+    }
+
+    private void HideModal()
+    {
+        isModalVisible = false;
+        newTask = new TodoTask(); // Zurücksetzen
     }
 
     private async Task SaveEdit()
     {
         if (task != null)
         {
-            string safeName = editName;
+            string safeName = newTask.Name;
             if (safeName.Length > 24) safeName = safeName.Substring(0, 24);
 
-            // Werte auf die Aufgabe übertragen
+            // Werte übertragen
             task.Name = safeName;
-            task.Description = editDescription;
-            task.Priority = editPriority;
+            task.Description = newTask.Description;
+            task.Priority = newTask.Priority;
+            task.Reminders = newTask.Reminders;
 
-            // In den LocalStorage speichern
+            // Benachrichtigungen aktualisieren
+            await ScheduleNotificationsForTask(task);
+
+            // In LocalStorage speichern
             var json = JsonSerializer.Serialize(tasks);
             await JSRuntime.InvokeVoidAsync("localStorage.setItem", "myTasks", json);
 
-            // Zurück in den Ansichts-Modus wechseln
-            isEditing = false;
-            StateHasChanged();
+            HideModal();
+            StateHasChanged(); // UI aktualisieren
         }
     }
 
@@ -185,33 +295,124 @@
     {
         if (task != null)
         {
-            // 1. Geplante Benachrichtigungen im Handy stoppen (falls vorhanden)
-            if (task.NotificationIds != null && task.NotificationIds.Any())
+            if (task.NotificationIds.Any())
             {
-                try
-                {
-                    LocalNotificationCenter.Current.Cancel(task.NotificationIds.ToArray());
-                }
-                catch
-                {
-                    // Ignorieren, falls das System busy ist
-                }
+                LocalNotificationCenter.Current.Cancel(task.NotificationIds.ToArray());
             }
 
-            // 2. Aus der Liste entfernen
             tasks.Remove(task);
-
-            // 3. Aktualisierte Liste speichern
             var json = JsonSerializer.Serialize(tasks);
             await JSRuntime.InvokeVoidAsync("localStorage.setItem", "myTasks", json);
-
-            // 4. Zurück zur Startseite
             NavManager.NavigateTo("/");
         }
     }
 
-    private void GoBack()
+    // ==========================================
+    // ERINNERUNGEN & TIME PICKER LOGIK
+    // ==========================================
+
+    private void ToggleReminderMenu() => isReminderMenuVisible = !isReminderMenuVisible;
+    private void AddNewReminder() => newTask.Reminders.Add(new Reminder());
+    private void RemoveReminder(Reminder reminder) => newTask.Reminders.Remove(reminder);
+
+    private void ToggleDay(Reminder reminder, string day)
     {
-        NavManager.NavigateTo("/");
+        if (reminder.Days.Contains(day))
+            reminder.Days.Remove(day);
+        else
+            reminder.Days.Add(day);
+    }
+
+    private void EditReminderTime(Reminder reminder)
+    {
+        selectedReminder = reminder;
+        TempTime = new TimeOnly(reminder.Hour, reminder.Minute);
+    }
+
+    private void SaveTime()
+    {
+        if (selectedReminder != null)
+        {
+            selectedReminder.Hour = TempTime.Hour;
+            selectedReminder.Minute = TempTime.Minute;
+            selectedReminder = null;
+            StateHasChanged();
+        }
+    }
+
+    private void CloseTimePicker() => selectedReminder = null;
+
+    private async Task RequestNotificationPermission()
+    {
+        notificationsEnabled = await LocalNotificationCenter.Current.RequestNotificationPermission();
+        StateHasChanged();
+    }
+
+    // ==========================================
+    // NOTIFICATION AUTOMATION
+    // ==========================================
+
+    private DayOfWeek GetDayOfWeek(string dayStr)
+    {
+        return dayStr switch
+        {
+            "Mo" => DayOfWeek.Monday,
+            "Di" => DayOfWeek.Tuesday,
+            "Mi" => DayOfWeek.Wednesday,
+            "Do" => DayOfWeek.Thursday,
+            "Fr" => DayOfWeek.Friday,
+            "Sa" => DayOfWeek.Saturday,
+            "So" => DayOfWeek.Sunday,
+            _ => DayOfWeek.Monday
+        };
+    }
+
+    private DateTime GetNextOccurrence(DayOfWeek targetDay, int hour, int minute)
+    {
+        DateTime now = DateTime.Now;
+        DateTime nextDate = now.Date.AddHours(hour).AddMinutes(minute);
+        while (nextDate.DayOfWeek != targetDay || nextDate <= now)
+        {
+            nextDate = nextDate.AddDays(1);
+        }
+        return nextDate;
+    }
+
+    private async Task ScheduleNotificationsForTask(TodoTask task)
+    {
+        if (task.NotificationIds.Any())
+        {
+            LocalNotificationCenter.Current.Cancel(task.NotificationIds.ToArray());
+            task.NotificationIds.Clear();
+        }
+
+        if (task.IsCompleted || !await LocalNotificationCenter.Current.AreNotificationsEnabled())
+        {
+            return;
+        }
+
+        foreach (var reminder in task.Reminders)
+        {
+            foreach (var dayStr in reminder.Days)
+            {
+                DayOfWeek targetDay = GetDayOfWeek(dayStr);
+                DateTime nextOccurrence = GetNextOccurrence(targetDay, reminder.Hour, reminder.Minute);
+                int notificationId = new Random().Next(100000, 999999);
+                task.NotificationIds.Add(notificationId);
+
+                var request = new NotificationRequest
+                {
+                    NotificationId = notificationId,
+                    Title = "Erinnerung: " + task.Name,
+                    Description = string.IsNullOrWhiteSpace(task.Description) ? "Es ist Zeit für deine Aufgabe!" : task.Description,
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        NotifyTime = nextOccurrence,
+                        RepeatType = NotificationRepeat.Weekly
+                    }
+                };
+                await LocalNotificationCenter.Current.Show(request);
+            }
+        }
     }
 }

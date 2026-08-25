@@ -4,10 +4,8 @@ wwwroot\calendar.svg
 wwwroot\check-circle.svg
 wwwroot\check.svg
 wwwroot\chevron-down.svg
-wwwroot\chevron-left.svg
 wwwroot\chevron-up.svg
 wwwroot\clock.svg
-wwwroot\edit.svg
 wwwroot\favicon.png
 wwwroot\home.svg
 wwwroot\icon-192.png
@@ -16,9 +14,11 @@ wwwroot\lib\bootstrap\dist\css\bootstrap.min.css
 wwwroot\lib\bootstrap\dist\css\bootstrap.min.css.map
 wwwroot\plus-circle.svg
 wwwroot\plus.svg
-wwwroot\red-trash.svg
 wwwroot\settings.svg
-wwwroot\trash.svg
+wwwroot\chevron-left.svg
 wwwroot\x.svg
+wwwroot\trash.svg
+wwwroot\edit.svg
+wwwroot\red-trash.svg
 C:\Users\maari\.nuget\packages\microsoft.aspnetcore.components.webview\10.0.0\build\..\staticwebassets\blazor.webview.js
 C:\Users\maari\.nuget\packages\microsoft.aspnetcore.components.webview\10.0.0\build\..\staticwebassets\blazor.modules.json
