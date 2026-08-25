@@ -21,6 +21,8 @@ Eine einfache Erinnerungs-App, entwickelt mit **.NET MAUI** und **Blazor**. Die 
 
 * **UI-Verbesserungen:** Noch flüssigere Übergänge und ein übersichtlicheres Design für die Benachrichtigungs-Menüs.
 * **Neugestaltung der Erinnerungssystem und UI.
+* **Einstellungen Menü.
+* Neue Sprachpakete und Designpakete.
 * **Fehlerbehebung:** Laufende Tests und Optimierungen auf verschiedenen Geräten.
 
 ---
