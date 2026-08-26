@@ -1,8 +1,8 @@
 # ToDo-App (.NET MAUI & Blazor)
 
-> **Status:** 🚧 Noch in Entwicklung (Work in Progress)
+> **Status:** 🚧 App in Entwicklung (Work in Progress)
 
-Eine einfache ToDo-App, entwickelt mit **.NET MAUI** und **Blazor**. Die App nutzt native Benachrichtigungen, um dich zuverlässig an deine Aufgaben zu erinnern.
+Eine einfache Erinnerungs-App, entwickelt mit **.NET MAUI** und **Blazor**. Die App nutzt native Benachrichtigungen, um dich zuverlässig an deine Aufgaben zu erinnern.
 
 ---
 
@@ -13,7 +13,6 @@ Eine einfache ToDo-App, entwickelt mit **.NET MAUI** und **Blazor**. Die App nut
 * **Erledigt-Status:** Hake erledigte Aufgaben direkt ab.
 * **Flexible Erinnerungen:** Lege für jede Aufgabe fest, an welchen Wochentagen und zu welcher Uhrzeit du erinnert werden möchtest.
 * **Lokale Datenspeicherung:** Deine Aufgaben werden direkt auf dem Gerät gespeichert, damit sie nicht verloren gehen.
-* **Native Benachrichtigungen:** Integrierte Unterstützung für echte Betriebssystem-Benachrichtigungen (Android / iOS).
 * **Automatisierte Benachrichtigungen:** Die Verknüpfung der eingestellten Wochentage und Uhrzeiten, damit Benachrichtigungen vollautomatisch zur richtigen Zeit auf dem Handy ankommen.
   
 ---
@@ -21,13 +20,16 @@ Eine einfache ToDo-App, entwickelt mit **.NET MAUI** und **Blazor**. Die App nut
 ## Was sich aktuell in Entwicklung befindet (Geplante Features)
 
 * **UI-Verbesserungen:** Noch flüssigere Übergänge und ein übersichtlicheres Design für die Benachrichtigungs-Menüs.
+* **Neugestaltung der Erinnerungssystem und UI.
+* **Einstellungen Menü.
+* Neue Sprachpakete und Designpakete.
 * **Fehlerbehebung:** Laufende Tests und Optimierungen auf verschiedenen Geräten.
 
 ---
 
 ## Verwendete Technologien
 
+* **C#**
 * **.NET MAUI** (Multi-platform App UI)
 * **Blazor** (für die Benutzeroberfläche)
-* **C#**
 * **Plugin.LocalNotification** (für native Push-Benachrichtigungen)
