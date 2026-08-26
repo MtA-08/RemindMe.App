@@ -40809,9 +40809,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\TodoApp.csproj",
-      "projectName": "TodoApp",
-      "projectPath": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\TodoApp.csproj",
+      "projectUniqueName": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\RemindMe.csproj",
+      "projectName": "RemindMe",
+      "projectPath": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\RemindMe.csproj",
       "packagesPath": "C:\\Users\\maari\\.nuget\\packages\\",
       "outputPath": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\obj\\",
       "projectStyle": "PackageReference",

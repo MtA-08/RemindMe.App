@@ -6,6 +6,16 @@
     font-family: Arial, sans-serif;
 }
 
+/* Schützt den generellen Inhalt der App */
+body, .main-layout {
+    /* Padding oben für die Statusleiste (Uhrzeit, Akku, Benachrichtigungen) */
+    padding-top: env(safe-area-inset-top);
+    /* Padding unten für die Navigationsleiste (Home-Balken, Zurück-Taste) */
+    padding-bottom: env(safe-area-inset-bottom);
+    /* Optional: Für Handys im Querformat */
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+}
 
 
 .loading-progress {

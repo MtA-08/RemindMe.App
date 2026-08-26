@@ -359,7 +359,7 @@ button, a, input, select, textarea, div {
 }
 
 .reminder-delete-btn {
-    background: rgba(255, 69, 58, 0.15);
+    background: #421c1d;
     border: none;
     padding: 8px;
     border-radius: 10px;
@@ -401,6 +401,7 @@ input[type="time"]::-webkit-calendar-picker-indicator {
 .sheet-footer {
     padding: 16px 20px 24px 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: calc(15px + env(safe-area-inset-bottom));
 }
 
 .save-btn-full {

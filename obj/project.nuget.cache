@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "8Hal4uM017U=",
+  "dgSpecHash": "NAaFibx+XPM=",
   "success": true,
-  "projectFilePath": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\TodoApp.csproj",
+  "projectFilePath": "C:\\Users\\maari\\OneDrive\\Belgeler\\Arikan\\Mustafa\\_CODE\\Blazor\\TodoApp\\TodoApp\\RemindMe.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\maari\\.nuget\\packages\\googlegson\\2.13.1.1\\googlegson.2.13.1.1.nupkg.sha512",
     "C:\\Users\\maari\\.nuget\\packages\\microsoft.aspnetcore.authorization\\10.0.0\\microsoft.aspnetcore.authorization.10.0.0.nupkg.sha512",

@@ -18,7 +18,7 @@
         </button>
 
         <button class="round-btn btn-add-task" @onclick="ShowModal" title="Task erstellen">
-            <img src="plus.svg" width="24" height="24" />
+            <img src="blue-plus.svg" width="24" height="24" />
         </button>
     </div>
 
@@ -48,7 +48,7 @@
     {
         <div class="sheet-overlay @(isTaskModalClosing ? "closing" : "")" @onclick="HideModalAsync"></div>
         <div class="bottom-sheet @(isTaskModalClosing ? "closing" : "")"
-             style="@GetSheetStyle(isTaskModalClosing)"
+             style="transform: translateY(@(sheetOffsetY)px);"
              @ontouchstart="OnTouchStart"
              @ontouchmove="OnTouchMove"
              @ontouchend="@(() => OnTouchEndAsync("Task"))">
@@ -102,7 +102,7 @@
     {
         <div class="sheet-overlay @(isReminderModalClosing ? "closing" : "")" @onclick="ToggleReminderMenuAsync"></div>
         <div class="bottom-sheet @(isReminderModalClosing ? "closing" : "")"
-             style="@GetSheetStyle(isReminderModalClosing)"
+             style="transform: translateY(@(sheetOffsetY)px);"
              @ontouchstart="OnTouchStart"
              @ontouchmove="OnTouchMove"
              @ontouchend="@(() => OnTouchEndAsync("Reminder"))">
@@ -125,13 +125,18 @@
                     {
                         <div class="set-reminder-card">
                             <div class="reminder-menu-day-picker">
-                                @foreach (var day in new[] { "Mo", "Di", "Mi", "Do", "Fr", "Sa", "So" })
-                                {
-                                    <button class="day-chip @(reminder.Days.Contains(day) ? "selected" : "")"
-                                            @onclick="() => ToggleDay(reminder, day)">
-                                        @day
-                                    </button>
-                                }
+                                <button class="day-chip @(reminder.Days.Count == 1 && reminder.Days.Contains("Heute") ? "selected" : "")"
+                                        @onclick='() => SetReminderOption(reminder, "Heute")'>
+                                    Heute
+                                </button>
+                                <button class="day-chip @(reminder.Days.Count == 1 && reminder.Days.Contains("Morgen") ? "selected" : "")"
+                                        @onclick='() => SetReminderOption(reminder, "Morgen")'>
+                                    Morgen
+                                </button>
+                                <button class="day-chip @(IsCustomDaysSelected(reminder) ? "selected" : "")"
+                                        @onclick="() => OpenDaySelection(reminder)">
+                                    Tag wählen
+                                </button>
                             </div>
                             <div class="reminder-card-footer">
                                 <div class="reminder-menu-time-picker" @onclick="() => EditReminderTime(reminder)">
@@ -139,7 +144,7 @@
                                     <span>@reminder.FormattedTime</span>
                                 </div>
                                 <button class="reminder-delete-btn" @onclick="() => RemoveReminder(reminder)">
-                                    <img src="trash.svg" width="18" alt="Löschen" />
+                                    <img src="red-trash.svg" width="18" alt="Löschen" />
                                 </button>
                             </div>
                         </div>
@@ -175,7 +180,7 @@
     {
         <div class="sheet-overlay @(isTimePickerClosing ? "closing" : "")" @onclick="CloseTimePickerAsync"></div>
         <div class="bottom-sheet compact-sheet @(isTimePickerClosing ? "closing" : "")"
-             style="@GetSheetStyle(isTimePickerClosing)"
+             style="transform: translateY(@(sheetOffsetY)px);"
              @ontouchstart="OnTouchStart"
              @ontouchmove="OnTouchMove"
              @ontouchend="@(() => OnTouchEndAsync("Time"))">
@@ -202,6 +207,67 @@
             </div>
         </div>
     }
+
+    <!-- BOTTOM SHEET: TAGE AUSWÄHLEN -->
+    @if (daySelectionReminder != null)
+    {
+        <div class="sheet-overlay @(isDaySelectionClosing ? "closing" : "")" @onclick="CloseDaySelectionAsync"></div>
+        <div class="bottom-sheet @(isDaySelectionClosing ? "closing" : "")"
+             style="transform: translateY(@(sheetOffsetY)px);"
+             @ontouchstart="OnTouchStart"
+             @ontouchmove="OnTouchMove"
+             @ontouchend="@(() => OnTouchEndAsync("Time"))">
+
+            <div class="sheet-drag-handle-area">
+                <div class="drag-handle"></div>
+            </div>
+
+            <div class="sheet-header">
+                <h3>Tage auswählen</h3>
+                <button class="close-btn" @onclick="CloseDaySelectionAsync">
+                    <img src="x.svg" alt="Schließen" />
+                </button>
+            </div>
+
+            <div class="sheet-content">
+                <!-- Kalender Kopfzeile (Monatsnavigation) -->
+                <div class="calendar-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <button class="round-btn btn-settings" @onclick="PrevMonth"><img src="chevron-left.svg" /></button>
+                    <h4 style="margin: 0;">@calendarDisplayDate.ToString("MMMM yyyy")</h4>
+                    <button class="round-btn btn-settings" @onclick="NextMonth"><img src="chevron-right.svg" /></button>
+                </div>
+
+                <!-- Kalender Raster -->
+                <div class="calendar-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center;">
+                    <!-- Wochentage -->
+                    <div class="day-name">Mo</div><div class="day-name">Di</div>
+                    <div class="day-name">Mi</div><div class="day-name">Do</div>
+                    <div class="day-name">Fr</div><div class="day-name">Sa</div>
+                    <div class="day-name">So</div>
+
+                    <!-- Leere Felder für den Monatsanfang -->
+                    @for (int i = 0; i < GetEmptyDaysAtStart(); i++)
+                    {
+                        <div></div>
+                    }
+
+                    <!-- Eigentliche Tage -->
+                    @for (int d = 1; d <= DateTime.DaysInMonth(calendarDisplayDate.Year, calendarDisplayDate.Month); d++)
+                    {
+                        var date = new DateTime(calendarDisplayDate.Year, calendarDisplayDate.Month, d);
+                        var dateStr = date.ToString("yyyy-MM-dd");
+                        bool isSelected = daySelectionReminder != null && daySelectionReminder.Days.Contains(dateStr);
+
+                        <button class="day-chip @(isSelected ? "selected" : "")"
+                                style="width: 100%; padding: 10px 0;"
+                                @onclick="() => ToggleDate(dateStr)">
+                            @d
+                        </button>
+                    }
+                </div>
+            </div>
+        </div>
+    }
 </div>
 
 @code {
@@ -212,6 +278,9 @@
     private Reminder? selectedReminder;
     private TimeOnly TempTime;
     private bool notificationsEnabled = false;
+    private Reminder? daySelectionReminder;
+    private bool isDaySelectionClosing = false;
+    private DateTime calendarDisplayDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
 
     // Animations- und Swipe-Zustände (Zusammengeführt ohne Duplikate)
     private double touchStartY = 0;
@@ -248,13 +317,6 @@
     // ==========================================
     // Swipe-Down & Animations-Steuerung
     // ==========================================
-
-    private string GetSheetStyle(bool isClosing)
-    {
-        if (isClosing) return "";
-        if (isDragging) return $"transform: translateY({sheetOffsetY}px); transition: none;";
-        return $"transform: translateY({sheetOffsetY}px); transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);";
-    }
 
     private void OnTouchStart(TouchEventArgs e)
     {
@@ -419,6 +481,47 @@
         sheetOffsetY = 0;
     }
 
+    // Hilfsmethode zur Überprüfung, ob spezifische Tage (nicht Heute/Morgen) gewählt wurden
+    private bool IsCustomDaysSelected(Reminder reminder)
+    {
+        return reminder.Days.Any(d => d != "Heute" && d != "Morgen");
+    }
+
+    // Setzt "Heute" oder "Morgen" und löscht alle anderen Tage
+    private void SetReminderOption(Reminder reminder, string option)
+    {
+        reminder.Days.Clear();
+        reminder.Days.Add(option);
+    }
+
+    // Öffnet das Fenster für die manuelle Tagesauswahl
+    private void OpenDaySelection(Reminder reminder)
+    {
+        if (!IsCustomDaysSelected(reminder))
+        {
+            reminder.Days.Clear(); // Leert Heute/Morgen, damit der User frisch wählen kann
+        }
+        daySelectionReminder = reminder;
+        sheetOffsetY = 0;
+    }
+
+    // Schließt das Auswahlfenster animiert
+    private async Task CloseDaySelectionAsync()
+    {
+        // Falls der Benutzer alle Tage abwählt, setzen wir es als Fallback zurück auf "Heute"
+        if (daySelectionReminder != null && daySelectionReminder.Days.Count == 0)
+        {
+            daySelectionReminder.Days.Add("Heute");
+        }
+
+        isDaySelectionClosing = true;
+        StateHasChanged();
+        await Task.Delay(250);
+        daySelectionReminder = null;
+        isDaySelectionClosing = false;
+        sheetOffsetY = 0;
+    }
+
     // ==========================================
     // Benachrichtigungen (LocalNotification)
     // ==========================================
@@ -473,8 +576,43 @@
         {
             foreach (var dayStr in reminder.Days)
             {
-                DayOfWeek targetDay = GetDayOfWeek(dayStr);
-                DateTime nextOccurrence = GetNextOccurrence(targetDay, reminder.Hour, reminder.Minute);
+                DateTime nextOccurrence;
+                NotificationRepeat repeatType = NotificationRepeat.Weekly;
+
+                // --- NEUE LOGIK FÜR HEUTE / MORGEN ---
+                if (dayStr == "Heute")
+                {
+                    nextOccurrence = DateTime.Today.AddHours(reminder.Hour).AddMinutes(reminder.Minute);
+
+                    // Falls die Uhrzeit für heute bereits vergangen ist, plane es für morgen ein
+                    if (nextOccurrence <= DateTime.Now)
+                    {
+                        nextOccurrence = nextOccurrence.AddDays(1);
+                    }
+                    repeatType = NotificationRepeat.No; // Keine wöchentliche Wiederholung für einmalige "Heute" Tasks
+                }
+                else if (dayStr == "Morgen")
+                {
+                    nextOccurrence = DateTime.Today.AddDays(1).AddHours(reminder.Hour).AddMinutes(reminder.Minute);
+                    repeatType = NotificationRepeat.No; // Keine Wiederholung
+                }
+                else if (DateTime.TryParseExact(dayStr, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
+                {
+                    // Setze die Uhrzeit für das gewählte Datum
+                    nextOccurrence = parsedDate.Date.AddHours(reminder.Hour).AddMinutes(reminder.Minute);
+                    repeatType = NotificationRepeat.No; // Spezifische Daten wiederholen sich nicht wöchentlich
+
+                    // Wenn das Datum + Uhrzeit bereits in der Vergangenheit liegt, überspringen wir die Erstellung
+                    if (nextOccurrence <= DateTime.Now)
+                    {
+                        continue;
+                    }
+                }
+                else
+                {
+                    // Fallback, falls noch alte "Mo", "Di" Einträge in der Datenbank hängen sollten
+                    continue;
+                }
 
                 int notificationId = new Random().Next(100000, 999999);
                 task.NotificationIds.Add(notificationId);
@@ -487,12 +625,55 @@
                     Schedule = new NotificationRequestSchedule
                     {
                         NotifyTime = nextOccurrence,
-                        RepeatType = NotificationRepeat.Weekly
+                        RepeatType = repeatType // Setzt dynamisch Weekly oder No
                     }
                 };
 
                 await LocalNotificationCenter.Current.Show(request);
             }
+        }
+    }
+
+    // ==========================================
+    // Datum Wähler Kalender
+    // ==========================================
+
+    // Monatsnavigation
+    private void PrevMonth()
+    {
+        calendarDisplayDate = calendarDisplayDate.AddMonths(-1);
+    }
+
+    private void NextMonth()
+    {
+        calendarDisplayDate = calendarDisplayDate.AddMonths(1);
+    }
+
+    // Berechnet die Einrückung für den ersten Tag des Monats im Raster
+    private int GetEmptyDaysAtStart()
+    {
+        int dayOfWeek = (int)calendarDisplayDate.DayOfWeek;
+        // C# Sonntag = 0, Montag = 1. Wir wollen Montag = 0 für das Raster:
+        return dayOfWeek == 0 ? 6 : dayOfWeek - 1;
+    }
+
+    // Speichert oder entfernt das gewählte Datum in der Reminder.Days Liste
+    private void ToggleDate(string dateStr)
+    {
+        if (daySelectionReminder == null) return;
+
+        if (daySelectionReminder.Days.Contains(dateStr))
+        {
+            daySelectionReminder.Days.Remove(dateStr);
+        }
+        else
+        {
+            // Wenn "Heute" oder "Morgen" drin stand, vorher leeren, da wir jetzt auf Datum-Modus wechseln
+            if (daySelectionReminder.Days.Contains("Heute") || daySelectionReminder.Days.Contains("Morgen"))
+            {
+                daySelectionReminder.Days.Clear();
+            }
+            daySelectionReminder.Days.Add(dateStr);
         }
     }
 }

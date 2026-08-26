@@ -47,7 +47,7 @@ button[b-gg1ak8a4hz], a[b-gg1ak8a4hz], input[b-gg1ak8a4hz], select[b-gg1ak8a4hz]
 }
 
 .btn-add-task[b-gg1ak8a4hz] {
-    background-color: rgba(48, 209, 88, 0.2);
+    background-color: #064a8e;
     color: #30d158;
 }
 
@@ -333,6 +333,10 @@ button[b-gg1ak8a4hz], a[b-gg1ak8a4hz], input[b-gg1ak8a4hz], select[b-gg1ak8a4hz]
     animation: fadeIn-b-gg1ak8a4hz 0.25s ease-out;
 }
 
+    .sheet-overlay.closing[b-gg1ak8a4hz] {
+        animation: fadeOut-b-gg1ak8a4hz 0.25s ease-in forwards;
+    }
+
 /* Bottom Sheet Container (~85% Bildschirmhöhe) */
 .bottom-sheet[b-gg1ak8a4hz] {
     position: fixed;
@@ -353,6 +357,10 @@ button[b-gg1ak8a4hz], a[b-gg1ak8a4hz], input[b-gg1ak8a4hz], select[b-gg1ak8a4hz]
     transition: transform 0.15s ease-out;
     touch-action: pan-y;
 }
+
+    .bottom-sheet.closing[b-gg1ak8a4hz] {
+        animation: slideDown-b-gg1ak8a4hz 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
+    }
 
 .compact-sheet[b-gg1ak8a4hz] {
     height: 45vh;
@@ -525,7 +533,7 @@ button[b-gg1ak8a4hz], a[b-gg1ak8a4hz], input[b-gg1ak8a4hz], select[b-gg1ak8a4hz]
 }
 
 .reminder-delete-btn[b-gg1ak8a4hz] {
-    background: rgba(255, 69, 58, 0.15);
+    background: #421c1d;
     border: none;
     padding: 8px;
     border-radius: 10px;
@@ -579,6 +587,7 @@ button[b-gg1ak8a4hz], a[b-gg1ak8a4hz], input[b-gg1ak8a4hz], select[b-gg1ak8a4hz]
 .sheet-footer[b-gg1ak8a4hz] {
     padding: 16px 20px 24px 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: calc(15px + env(safe-area-inset-bottom));
 }
 
 .save-btn-full[b-gg1ak8a4hz] {
@@ -617,13 +626,23 @@ button[b-gg1ak8a4hz], a[b-gg1ak8a4hz], input[b-gg1ak8a4hz], select[b-gg1ak8a4hz]
         opacity: 1;
     }
 }
+    
+@keyframes slideDown-b-gg1ak8a4hz {
+    from {
+        transform: translateY(0);
+    }
 
-.bottom-sheet.closing[b-gg1ak8a4hz] {
-    transform: translateY(100%) !important;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    to {
+        transform: translateY(100%);
+    }
 }
 
-.sheet-overlay.closing[b-gg1ak8a4hz] {
-    opacity: 0 !important;
-    transition: opacity 0.3s ease-out !important;
+@keyframes fadeOut-b-gg1ak8a4hz {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }

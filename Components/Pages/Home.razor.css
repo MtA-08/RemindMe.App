@@ -47,7 +47,7 @@ button, a, input, select, textarea, div {
 }
 
 .btn-add-task {
-    background-color: rgba(48, 209, 88, 0.2);
+    background-color: #064a8e;
     color: #30d158;
 }
 
@@ -333,6 +333,10 @@ button, a, input, select, textarea, div {
     animation: fadeIn 0.25s ease-out;
 }
 
+    .sheet-overlay.closing {
+        animation: fadeOut 0.25s ease-in forwards;
+    }
+
 /* Bottom Sheet Container (~85% Bildschirmhöhe) */
 .bottom-sheet {
     position: fixed;
@@ -353,6 +357,10 @@ button, a, input, select, textarea, div {
     transition: transform 0.15s ease-out;
     touch-action: pan-y;
 }
+
+    .bottom-sheet.closing {
+        animation: slideDown 0.25s cubic-bezier(0.4, 0, 1, 1) forwards;
+    }
 
 .compact-sheet {
     height: 45vh;
@@ -525,7 +533,7 @@ button, a, input, select, textarea, div {
 }
 
 .reminder-delete-btn {
-    background: rgba(255, 69, 58, 0.15);
+    background: #421c1d;
     border: none;
     padding: 8px;
     border-radius: 10px;
@@ -579,6 +587,7 @@ button, a, input, select, textarea, div {
 .sheet-footer {
     padding: 16px 20px 24px 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-bottom: calc(15px + env(safe-area-inset-bottom));
 }
 
 .save-btn-full {
@@ -617,13 +626,23 @@ button, a, input, select, textarea, div {
         opacity: 1;
     }
 }
+    
+@keyframes slideDown {
+    from {
+        transform: translateY(0);
+    }
 
-.bottom-sheet.closing {
-    transform: translateY(100%) !important;
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    to {
+        transform: translateY(100%);
+    }
 }
 
-.sheet-overlay.closing {
-    opacity: 0 !important;
-    transition: opacity 0.3s ease-out !important;
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0;
+    }
 }
