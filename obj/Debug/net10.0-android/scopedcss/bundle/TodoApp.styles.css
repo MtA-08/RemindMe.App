@@ -397,6 +397,14 @@ button[b-gg1ak8a4hz], a[b-gg1ak8a4hz], input[b-gg1ak8a4hz], select[b-gg1ak8a4hz]
     box-sizing: border-box;
 }
 /* /Components/Pages/TaskDetail.razor.rz.scp.css */
+button[b-a91xkmgxuf], a[b-a91xkmgxuf], input[b-a91xkmgxuf], select[b-a91xkmgxuf], textarea[b-a91xkmgxuf], div[b-a91xkmgxuf] {
+    -webkit-tap-highlight-color: transparent;
+}
+
+    input:focus[b-a91xkmgxuf] {
+        outline: none;
+    }
+
 .task-detail-page[b-a91xkmgxuf] {
     width: 92%;
     margin: 0 auto;

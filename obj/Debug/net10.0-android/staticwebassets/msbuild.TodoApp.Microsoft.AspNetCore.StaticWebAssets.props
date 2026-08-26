@@ -412,12 +412,12 @@
       <RelatedAsset></RelatedAsset>
       <AssetTraitName>ScopedCss</AssetTraitName>
       <AssetTraitValue>ApplicationBundle</AssetTraitValue>
-      <Fingerprint>fvfigkuajh</Fingerprint>
-      <Integrity>22DVqMAWVTsa6X/wIwPvp7ThzzCK/0wUio4o3pd7/Zo=</Integrity>
+      <Fingerprint>5cezexs33q</Fingerprint>
+      <Integrity>q1p1mLLRuOXHBTjFoC4SHQZiU0CbAxo9j70pJgMvGr8=</Integrity>
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-      <FileLength>16415</FileLength>
-      <LastWriteTime>Tue, 25 Aug 2026 20:39:25 GMT</LastWriteTime>
+      <FileLength>16660</FileLength>
+      <LastWriteTime>Wed, 26 Aug 2026 14:35:43 GMT</LastWriteTime>
       <OriginalItemSpec>$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\TodoApp.styles.css'))</OriginalItemSpec>
     </StaticWebAsset>
     <StaticWebAsset Include="$([System.IO.Path]::GetFullPath('$(MSBuildThisFileDirectory)..\staticwebassets\trash.svg'))">
