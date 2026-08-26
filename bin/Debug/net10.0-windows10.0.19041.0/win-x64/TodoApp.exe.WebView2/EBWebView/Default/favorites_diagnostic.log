@@ -636,3 +636,143 @@
 2026-08-26 15:01:10.966: [INFO] BookmarkModelLoaded, ids_reassigned: 0
 2026-08-26 15:01:10.966: [INFO] BookmarksLoadDropped droppedNodes=0
 2026-08-26 15:01:10.966: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:16:48.314: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:17:03.821: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:17:03.821: [INFO] Profiles total count: 1
+2026-08-26 15:17:03.821: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:01:11.054Z
+2026-08-26 15:17:03.821: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:17:03.821: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:01:11.054Z
+2026-08-26 15:17:03.821: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 15:17:03.821: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 15:17:03.821: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 15:17:03.821: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:21:48.279: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:38:06.074: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:38:06.074: [INFO] Profiles total count: 1
+2026-08-26 15:38:06.075: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:17:03.985Z
+2026-08-26 15:38:06.075: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:38:06.075: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:17:03.985Z
+2026-08-26 15:38:06.075: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 15:38:06.075: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 15:38:06.075: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 15:38:06.075: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:42:43.587: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:42:50.241: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:42:50.241: [INFO] Profiles total count: 1
+2026-08-26 15:42:50.241: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:42:28.704Z
+2026-08-26 15:42:50.241: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:42:50.242: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:42:28.704Z
+2026-08-26 15:42:50.242: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 15:42:50.242: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 15:42:50.242: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 15:42:50.242: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:45:06.397: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:45:29.546: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:45:29.546: [INFO] Profiles total count: 1
+2026-08-26 15:45:29.547: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:42:50.373Z
+2026-08-26 15:45:29.547: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:45:29.547: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:42:50.373Z
+2026-08-26 15:45:29.547: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 15:45:29.547: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 15:45:29.547: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 15:45:29.547: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:46:21.240: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:46:24.216: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:46:24.216: [INFO] Profiles total count: 1
+2026-08-26 15:46:24.217: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:45:29.651Z
+2026-08-26 15:46:24.217: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:46:24.217: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:45:29.651Z
+2026-08-26 15:46:24.217: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 15:46:24.217: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 15:46:24.217: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 15:46:24.217: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:46:44.957: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:46:48.017: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:46:48.017: [INFO] Profiles total count: 1
+2026-08-26 15:46:48.017: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:46:24.324Z
+2026-08-26 15:46:48.017: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:46:48.017: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:46:24.324Z
+2026-08-26 15:46:48.017: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 15:46:48.017: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 15:46:48.017: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 15:46:48.017: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:48:42.626: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:49:13.434: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:49:13.434: [INFO] Profiles total count: 1
+2026-08-26 15:49:13.434: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:48:20.629Z
+2026-08-26 15:49:13.434: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:49:13.434: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:48:20.629Z
+2026-08-26 15:49:13.434: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 15:49:13.434: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 15:49:13.435: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 15:49:13.435: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:58:34.428: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 15:58:41.958: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:58:41.958: [INFO] Profiles total count: 1
+2026-08-26 15:58:41.958: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:49:13.527Z
+2026-08-26 15:58:41.958: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 15:58:41.958: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T15:49:13.527Z
+2026-08-26 15:58:41.958: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 15:58:41.958: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 15:58:41.958: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 15:58:41.958: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:04:33.423: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:04:44.327: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:04:44.327: [INFO] Profiles total count: 1
+2026-08-26 16:04:44.328: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:00:39.005Z
+2026-08-26 16:04:44.328: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:04:44.328: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:00:39.005Z
+2026-08-26 16:04:44.328: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 16:04:44.328: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 16:04:44.328: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 16:04:44.328: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:05:06.383: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:07:14.179: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:07:14.179: [INFO] Profiles total count: 1
+2026-08-26 16:07:14.179: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:04:44.437Z
+2026-08-26 16:07:14.179: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:07:14.179: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:04:44.437Z
+2026-08-26 16:07:14.179: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 16:07:14.179: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 16:07:14.179: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 16:07:14.179: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:07:55.876: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:07:59.211: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:07:59.211: [INFO] Profiles total count: 1
+2026-08-26 16:07:59.211: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:07:14.275Z
+2026-08-26 16:07:59.211: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:07:59.211: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:07:14.275Z
+2026-08-26 16:07:59.211: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 16:07:59.211: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 16:07:59.211: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 16:07:59.211: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:16:49.340: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:25:34.961: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:25:34.961: [INFO] Profiles total count: 1
+2026-08-26 16:25:34.961: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:07:59.348Z
+2026-08-26 16:25:34.961: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:25:34.962: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:07:59.348Z
+2026-08-26 16:25:34.962: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 16:25:34.962: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 16:25:34.962: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 16:25:34.962: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:28:41.561: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:28:45.464: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:28:45.464: [INFO] Profiles total count: 1
+2026-08-26 16:28:45.465: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:25:35.057Z
+2026-08-26 16:28:45.465: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:28:45.465: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:25:35.057Z
+2026-08-26 16:28:45.465: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 16:28:45.465: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 16:28:45.465: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 16:28:45.465: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:29:01.498: [INFO] BookmarksSnapshot Shutdown total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
+2026-08-26 16:31:46.464: [INFO] CurrentProfilePath: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:31:46.464: [INFO] Profiles total count: 1
+2026-08-26 16:31:46.464: [INFO] Profile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:29:00.760Z
+2026-08-26 16:31:46.464: [INFO] LastUsedProfileDir: C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default
+2026-08-26 16:31:46.464: [INFO] MostRecentlyActiveProfile: name=Profil 1 path=C:\Users\maari\OneDrive\Belgeler\Arikan\Mustafa\_CODE\Blazor\TodoApp\TodoApp\bin\Debug\net10.0-windows10.0.19041.0\win-x64\TodoApp.exe.WebView2\EBWebView\Default lastActive=2026-08-26T16:29:00.760Z
+2026-08-26 16:31:46.464: [INFO] OnDoneLoading sync enabled: 0
+2026-08-26 16:31:46.464: [INFO] BookmarkModelLoaded, ids_reassigned: 0
+2026-08-26 16:31:46.464: [INFO] BookmarksLoadDropped droppedNodes=0
+2026-08-26 16:31:46.464: [INFO] BookmarksSnapshot Startup total=0 bar=0 other=0 mobile=0 showBar=0 showBarNTP=1
