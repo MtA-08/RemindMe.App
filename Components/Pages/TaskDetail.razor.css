@@ -1,3 +1,11 @@
+button, a, input, select, textarea, div {
+    -webkit-tap-highlight-color: transparent;
+}
+
+    input:focus {
+        outline: none;
+    }
+
 .task-detail-page {
     width: 92%;
     margin: 0 auto;
