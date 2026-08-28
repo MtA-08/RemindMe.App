@@ -1,4 +1,4 @@
-# ToDo-App (.NET MAUI & Blazor)
+# RemindMe (.NET MAUI & Blazor)
 
 > **Status:** 🚧 App in Entwicklung (Work in Progress)
 
@@ -8,22 +8,19 @@ Eine einfache Erinnerungs-App, entwickelt mit **.NET MAUI** und **Blazor**. Die 
 
 ## Was die App bereits kann (Bestehende Funktionen)
 
-* **Aufgaben verwalten:** Erstelle neue Aufgaben mit Name, Beschreibung und einer Priorität (Niedrig, Mittel, Hoch).
-* **Bearbeiten und Löschen:** Halte eine Aufgabe gedrückt, um sie zu bearbeiten oder zu löschen.
-* **Erledigt-Status:** Hake erledigte Aufgaben direkt ab.
-* **Flexible Erinnerungen:** Lege für jede Aufgabe fest, an welchen Wochentagen und zu welcher Uhrzeit du erinnert werden möchtest.
+* **Flexible Erinnerungen:** Lege für jede Aufgabe fest, ob du Heute, Morgen oder an einem oder am mehreren beliebigen Zukünftigen Tagen eine Erinnerung erhalten möchtest.
 * **Lokale Datenspeicherung:** Deine Aufgaben werden direkt auf dem Gerät gespeichert, damit sie nicht verloren gehen.
-* **Automatisierte Benachrichtigungen:** Die Verknüpfung der eingestellten Wochentage und Uhrzeiten, damit Benachrichtigungen vollautomatisch zur richtigen Zeit auf dem Handy ankommen.
+* **Automatisierte Benachrichtigungen:** Die Verknüpfung der eingestellten Tag und Uhrzeiten, damit Benachrichtigungen vollautomatisch zur richtigen Zeit auf dem Handy ankommen.
+* **Erledigt-Status:** Hake erledigte Aufgaben direkt ab.
   
 ---
 
 ## Was sich aktuell in Entwicklung befindet (Geplante Features)
 
-* **UI-Verbesserungen:** Noch flüssigere Übergänge und ein übersichtlicheres Design für die Benachrichtigungs-Menüs.
-* **Neugestaltung der Erinnerungssystem und UI.
-* **Einstellungen Menü.
+* Einstellungen Menü.
 * Neue Sprachpakete und Designpakete.
-* **Fehlerbehebung:** Laufende Tests und Optimierungen auf verschiedenen Geräten.
+* UI/UX Verbesserungen.
+* **Fehlerbehebung:** Laufende Tests und Optimierungen auf verschiedenen Geräten und Betriebssysteme.
 
 ---
 
