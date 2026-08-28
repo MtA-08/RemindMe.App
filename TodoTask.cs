@@ -5,7 +5,6 @@ using static TodoApp.Components.Pages.Home;
 
 namespace TodoApp
 {
-    // Task class
     public class TodoTask
     {
         public string Id { get; set; } = Guid.NewGuid().ToString();

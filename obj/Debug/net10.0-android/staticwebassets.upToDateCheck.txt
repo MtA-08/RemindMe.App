@@ -1,5 +1,7 @@
 wwwroot\app.css
+wwwroot\bell-alt-svgrepo-com.svg
 wwwroot\bell.svg
+wwwroot\bigbell.svg
 wwwroot\blue-plus.svg
 wwwroot\calendar.svg
 wwwroot\check-circle.svg
