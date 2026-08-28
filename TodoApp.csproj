@@ -32,7 +32,7 @@
         <ApplicationTitle>RemindMe</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.RemindMe</ApplicationId>
+        <ApplicationId>RemindMe</ApplicationId>
 
         <!-- Versions -->
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
