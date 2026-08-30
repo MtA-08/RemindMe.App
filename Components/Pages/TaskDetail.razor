@@ -1,47 +1,45 @@
 ﻿@page "/task/{Id}"
-@inject IJSRuntime JSRuntime
+
+@layout MainLayout
+@inject TaskStorageService TaskStorage
 @inject NavigationManager Navigation
-@using System.Text.Json
+
+@using TodoApp.Services
 @using Plugin.LocalNotification
 @using Plugin.LocalNotification.Core.Models
 
 <div class="task-detail-page">
-    @if (task == null)
+    @if (isLoading)
     {
         <div class="loading-state">
             <p>Aufgabe wird geladen...</p>
+        </div>
+    }
+    else if (task == null)
+    {
+        <div class="loading-state">
+            <p>Aufgabe wurde nicht gefunden.</p>
         </div>
     }
     else
     {
         <!-- Action Header -->
         <div class="detail-header-actions">
-            <button class="round-btn btn-back" @onclick="GoBack" title="Zurück">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                    <polyline points="12 19 5 12 12 5"></polyline>
-                </svg>
+            <button class="round-btn btn-back" @onclick="GoBack">
+                <img src="chevron-left.svg" />
             </button>
 
             <div class="right-actions">
                 <button class="round-btn btn-edit" @onclick="OpenEditModal" title="Bearbeiten">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                    </svg>
+                   <img src="edit.svg" />
                 </button>
                 <button class="round-btn btn-delete" @onclick="DeleteTaskAsync" title="Löschen">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="3 6 5 6 21 6"></polyline>
-                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                    </svg>
+                    <img src="red-trash.svg" />
                 </button>
             </div>
         </div>
 
-        <!-- ANSICHTS-MODUS -->
+        <!-- DETAILIERTE ANSICHT-MODUS -->
         <div class="detail-body">
             <div class="detail-block">
                 <span class="field-label">NAME</span>
@@ -63,10 +61,7 @@
                         @foreach (var reminder in task.Reminders)
                         {
                             <div class="reminder-card">
-                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#888888" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <polyline points="12 6 12 12 16 14"></polyline>
-                                </svg>
+                                <img src="clock.svg" />
                                 <span class="reminder-days">
                                     @(reminder.Days != null && reminder.Days.Any() ? string.Join(", ", reminder.Days) : "Keine Tage")
                                 </span>
@@ -79,7 +74,7 @@
                 }
                 else
                 {
-                    <p class="field-value empty-text">Keine Erinnerungen eingestellt.</p>
+                    <p class="field-value empty-text">Keine Erinnerungen.</p>
                 }
             </div>
         </div>
@@ -87,20 +82,12 @@
         <!-- BOTTOM SHEET: TASK BEARBEITEN -->
         @if (isModalVisible)
         {
-            <div class="sheet-overlay @(isClosing ? "closing" : "")" @onclick="CloseEditModalAnimated"></div>
-            <div class="bottom-sheet @(isClosing ? "closing" : "")"
-                 style="transform: translateY(@(sheetOffsetY)px);"
-                 @ontouchstart="OnTouchStart"
-                 @ontouchmove="OnTouchMove"
-                 @ontouchend="() => OnTouchEnd(CloseEditModalAnimated)">
-
-                <div class="sheet-drag-handle-area">
-                    <div class="drag-handle"></div>
-                </div>
+            <div class="sheet-overlay @(isClosing ? "closing" : "")" @onclick="CloseEditModalAsync"></div>
+            <div class="bottom-sheet @(isClosing ? "closing" : "")">
 
                 <div class="sheet-header">
                     <h3>Task bearbeiten</h3>
-                    <button class="close-btn" @onclick="CloseEditModalAnimated">
+                    <button class="close-btn" @onclick="CloseEditModalAsync">
                         <img src="x.svg" alt="Schließen" />
                     </button>
                 </div>
@@ -108,12 +95,12 @@
                 <div class="sheet-content">
                     <div class="input-group">
                         <label>NAME</label>
-                        <input type="text" @bind="newTask.Name" maxlength="24" class="text-input-field" placeholder="Task Name...">
+                        <input type="text" @bind="editTask.Name" maxlength="@MaxTaskNameLength" class="text-input-field" placeholder="Task Name...">
                     </div>
 
                     <div class="input-group">
                         <label>BESCHREIBUNG</label>
-                        <textarea @bind="newTask.Description" class="text-input-field textarea-field" placeholder="Beschreibung (optional)..."></textarea>
+                        <textarea @bind="editTask.Description" class="text-input-field textarea-field" placeholder="Beschreibung (optional)..."></textarea>
                     </div>
 
                     <div class="input-group">
@@ -121,7 +108,7 @@
                         <div class="select-menu-card" @onclick="ToggleReminderMenu">
                             <div class="select-menu-left">
                                 <img src="clock.svg" alt="Clock" width="18" />
-                                <span>@(newTask.Reminders.Count > 0 ? $"{newTask.Reminders.Count} Erinnerung(en) aktiv" : "Keine Erinnerung")</span>
+                                <span>@(editTask.Reminders.Count > 0 ? $"{editTask.Reminders.Count} Erinnerung(en) aktiv" : "Keine Erinnerung")</span>
                             </div>
                             <span class="action-link">Konfigurieren</span>
                         </div>
@@ -140,20 +127,12 @@
         <!-- BOTTOM SHEET: ERINNERUNGEN -->
         @if (isReminderMenuVisible)
         {
-            <div class="sheet-overlay @(isClosing ? "closing" : "")" @onclick="ToggleReminderMenuAnimated"></div>
-            <div class="bottom-sheet @(isClosing ? "closing" : "")"
-                 style="transform: translateY(@(sheetOffsetY)px);"
-                 @ontouchstart="OnTouchStart"
-                 @ontouchmove="OnTouchMove"
-                 @ontouchend="() => OnTouchEnd(ToggleReminderMenuAnimated)">
-
-                <div class="sheet-drag-handle-area">
-                    <div class="drag-handle"></div>
-                </div>
+            <div class="sheet-overlay @(isClosing ? "closing" : "")" @onclick="ToggleReminderMenuAsync"></div>
+            <div class="bottom-sheet @(isClosing ? "closing" : "")">
 
                 <div class="sheet-header">
                     <h3>Erinnerungen verwalten</h3>
-                    <button class="close-btn" @onclick="ToggleReminderMenuAnimated">
+                    <button class="close-btn" @onclick="ToggleReminderMenuAsync">
                         <img src="x.svg" alt="Schließen" />
                     </button>
                 </div>
@@ -161,7 +140,7 @@
                 <div class="sheet-content">
                     @if (notificationsEnabled)
                     {
-                        @foreach (var reminder in newTask.Reminders)
+                        @foreach (var reminder in editTask.Reminders)
                         {
                             <div class="set-reminder-card">
                                 <div class="reminder-menu-day-picker">
@@ -207,7 +186,7 @@
                 </div>
 
                 <div class="sheet-footer">
-                    <button class="save-btn-full" @onclick="ToggleReminderMenuAnimated">
+                    <button class="save-btn-full" @onclick="ToggleReminderMenuAsync">
                         <img src="check.svg" alt="Fertig" />
                         <span>Fertig</span>
                     </button>
@@ -218,20 +197,12 @@
         <!-- BOTTOM SHEET / MODAL: ZEITAUSWAHL -->
         @if (selectedReminder != null)
         {
-            <div class="sheet-overlay @(isClosing ? "closing" : "")" @onclick="CloseTimePickerAnimated"></div>
-            <div class="bottom-sheet compact-sheet @(isClosing ? "closing" : "")"
-                 style="transform: translateY(@(sheetOffsetY)px);"
-                 @ontouchstart="OnTouchStart"
-                 @ontouchmove="OnTouchMove"
-                 @ontouchend="() => OnTouchEnd(CloseTimePickerAnimated)">
-
-                <div class="sheet-drag-handle-area">
-                    <div class="drag-handle"></div>
-                </div>
+            <div class="sheet-overlay @(isClosing ? "closing" : "")" @onclick="CloseTimePickerAsync"></div>
+            <div class="bottom-sheet compact-sheet @(isClosing ? "closing" : "")">
 
                 <div class="sheet-header">
                     <h3>Uhrzeit auswählen</h3>
-                    <button class="close-btn" @onclick="CloseTimePickerAnimated">
+                    <button class="close-btn" @onclick="CloseTimePickerAsync">
                         <img src="x.svg" alt="Schließen" />
                     </button>
                 </div>
@@ -241,7 +212,7 @@
                 </div>
 
                 <div class="sheet-footer">
-                    <button class="save-btn-full" @onclick="SaveTimeAnimated">
+                    <button class="save-btn-full" @onclick="SaveTimeAsync">
                         <span>Uhrzeit übernehmen</span>
                     </button>
                 </div>
@@ -252,15 +223,7 @@
         @if (daySelectionReminder != null)
         {
             <div class="sheet-overlay @(isDaySelectionClosing ? "closing" : "")" @onclick="CloseDaySelectionAsync"></div>
-            <div class="bottom-sheet @(isDaySelectionClosing ? "closing" : "")"
-                 style="transform: translateY(@(sheetOffsetY)px);"
-                 @ontouchstart="OnTouchStart"
-                 @ontouchmove="OnTouchMove"
-                 @ontouchend="@(() => OnTouchEnd(CloseDaySelectionAsync))">
-
-                <div class="sheet-drag-handle-area">
-                    <div class="drag-handle"></div>
-                </div>
+            <div class="bottom-sheet @(isDaySelectionClosing ? "closing" : "")">
 
                 <div class="sheet-header">
                     <h3>Tage auswählen</h3>
@@ -271,14 +234,14 @@
 
                 <div class="sheet-content">
                     <!-- Kalender Kopfzeile (Monatsnavigation) -->
-                    <div class="calendar-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <button class="round-btn btn-settings" @onclick="NextMonth"><img src="chevron-left.svg" /></button>
+                    <div class="calendar-header">
+                        <button class="round-btn btn-back" @onclick="PrevMonth"><img src="chevron-left.svg" /></button>
                         <h4 style="margin: 0;">@calendarDisplayDate.ToString("MMMM yyyy")</h4>
-                        <button class="round-btn btn-settings" @onclick="NextMonth"><img src="chevron-right.svg" /></button>
+                        <button class="round-btn btn-back" @onclick="NextMonth"><img src="chevron-right.svg" /></button>
                     </div>
 
                     <!-- Kalender Raster -->
-                    <div class="calendar-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center;">
+                    <div class="calendar-grid">
                         <!-- Wochentage -->
                         <div class="day-name">Mo</div><div class="day-name">Di</div>
                         <div class="day-name">Mi</div><div class="day-name">Do</div>
@@ -312,12 +275,17 @@
 </div>
 
 @code {
+    private const string TasksStorageKey = "myTasks";
+    private const int MaxTaskNameLength = 24;
+    private const int SheetAnimationDurationMs = 300;
+
     [Parameter]
     public string Id { get; set; } = string.Empty;
 
     private List<TodoTask> tasks = new();
     private TodoTask? task;
-    private TodoTask newTask = new TodoTask();
+    private bool isLoading = true;
+    private TodoTask editTask = new TodoTask();
 
     private bool isModalVisible = false;
     private bool isReminderMenuVisible = false;
@@ -331,16 +299,15 @@
     // Animation & UI States
     private bool isClosing = false;
     private double touchStartY = 0;
-    private double sheetOffsetY = 0;
 
     protected override async Task OnInitializedAsync()
     {
-        var json = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "myTasks");
-        if (!string.IsNullOrEmpty(json))
-        {
-            tasks = JsonSerializer.Deserialize<List<TodoTask>>(json) ?? new List<TodoTask>();
-            task = tasks.FirstOrDefault(t => t.Id == Id);
-        }
+        tasks = await TaskStorage.LoadTasksAsync();
+
+        task = tasks.FirstOrDefault(
+            task => task.Id == Id);
+
+        isLoading = false;
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -353,43 +320,10 @@
     }
 
     // ==========================================
-    // Swipe-Down Gesten-Steuerung
-    // ==========================================
-
-    private void OnTouchStart(TouchEventArgs e)
-    {
-        touchStartY = e.Touches[0].ClientY;
-        sheetOffsetY = 0;
-    }
-
-    private void OnTouchMove(TouchEventArgs e)
-    {
-        double currentY = e.Touches[0].ClientY;
-        double deltaY = currentY - touchStartY;
-
-        if (deltaY > 0)
-        {
-            sheetOffsetY = deltaY;
-        }
-    }
-
-    private async Task OnTouchEnd(Func<Task> closeCallback)
-    {
-        if (sheetOffsetY > 100)
-        {
-            await closeCallback.Invoke();
-        }
-        else
-        {
-            sheetOffsetY = 0;
-        }
-    }
-
-    // ==========================================
     // Animations-Hilfsmethode für Schließvorgänge
     // ==========================================
 
-    private async Task AnimateClose(Action closeAction)
+    private async Task AnimateCloseAsync(Action closeAction)
     {
         if (isClosing) return;
         isClosing = true;
@@ -399,7 +333,6 @@
 
         closeAction.Invoke();
         isClosing = false;
-        sheetOffsetY = 0;
         StateHasChanged();
     }
 
@@ -413,7 +346,7 @@
     {
         if (task != null)
         {
-            newTask = new TodoTask
+            editTask = new TodoTask
             {
                 Name = task.Name,
                 Description = task.Description,
@@ -425,30 +358,29 @@
                     Minute = r.Minute
                 }).ToList()
             };
-            sheetOffsetY = 0;
             isClosing = false;
             isModalVisible = true;
         }
     }
 
-    private Task CloseEditModalAnimated() => AnimateClose(() => { isModalVisible = false; newTask = new TodoTask(); });
+    private Task CloseEditModalAsync() => AnimateCloseAsync(() => { isModalVisible = false; editTask = new TodoTask(); });
 
     private async Task SaveEditAsync()
     {
-        if (task != null && !string.IsNullOrWhiteSpace(newTask.Name))
+        if (task != null && !string.IsNullOrWhiteSpace(editTask.Name))
         {
-            string safeName = newTask.Name.Length > 24 ? newTask.Name.Substring(0, 24) : newTask.Name;
+            string safeName = editTask.Name.Length > MaxTaskNameLength ? editTask.Name.Substring(0, MaxTaskNameLength) : editTask.Name;
 
             task.Name = safeName;
-            task.Description = newTask.Description;
-            task.Reminders = newTask.Reminders;
+            task.Description = editTask.Description;
+            task.Reminders = editTask.Reminders;
 
             await ScheduleNotificationsForTask(task);
 
             var json = JsonSerializer.Serialize(tasks);
-            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "myTasks", json);
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", TasksStorageKey, json);
 
-            await CloseEditModalAnimated();
+            await CloseEditModalAsync();
         }
     }
 
@@ -463,7 +395,7 @@
 
             tasks.Remove(task);
             var json = JsonSerializer.Serialize(tasks);
-            await JSRuntime.InvokeVoidAsync("localStorage.setItem", "myTasks", json);
+            await JSRuntime.InvokeVoidAsync("localStorage.setItem", TasksStorageKey, json);
 
             Navigation.NavigateTo("/");
         }
@@ -475,16 +407,15 @@
 
     private void ToggleReminderMenu()
     {
-        sheetOffsetY = 0;
         isClosing = false;
         isReminderMenuVisible = !isReminderMenuVisible;
     }
 
-    private Task ToggleReminderMenuAnimated()
+    private Task ToggleReminderMenuAsync()
     {
         if (isReminderMenuVisible)
         {
-            return AnimateClose(() => isReminderMenuVisible = false);
+            return AnimateCloseAsync(() => isReminderMenuVisible = false);
         }
         else
         {
@@ -493,36 +424,29 @@
         }
     }
 
-    private void AddNewReminder() => newTask.Reminders.Add(new Reminder());
-    private void RemoveReminder(Reminder reminder) => newTask.Reminders.Remove(reminder);
-
-    private void ToggleDay(Reminder reminder, string day)
-    {
-        if (reminder.Days.Contains(day))
-            reminder.Days.Remove(day);
-        else
-            reminder.Days.Add(day);
-    }
+    private void AddNewReminder() => editTask.Reminders.Add(new Reminder());
+    private void RemoveReminder(Reminder reminder) => editTask.Reminders.Remove(reminder);
 
     private void EditReminderTime(Reminder reminder)
     {
         selectedReminder = reminder;
-        tempTime = new TimeOnly(reminder.Hour, reminder.Minute);
-        sheetOffsetY = 0;
+        tempTime = tempTime;
         isClosing = false;
     }
 
-    private Task SaveTimeAnimated()
+    private async Task SaveTimeAsync()
     {
-        if (selectedReminder != null)
+        if (selectedReminder == null)
         {
-            selectedReminder.Hour = tempTime.Hour;
-            selectedReminder.Minute = tempTime.Minute;
+            return;
         }
-        return CloseTimePickerAnimated();
+
+        selectedReminder.Time = TempTime;
+
+        await CloseTimePickerAsync();
     }
 
-    private Task CloseTimePickerAnimated() => AnimateClose(() => selectedReminder = null);
+    private Task CloseTimePickerAsync() => AnimateCloseAsync(() => selectedReminder = null);
 
     // Hilfsmethode zur Überprüfung, ob spezifische Tage (nicht Heute/Morgen) gewählt wurden
     private bool IsCustomDaysSelected(Reminder reminder)
@@ -545,7 +469,6 @@
             reminder.Days.Clear(); // Leert Heute/Morgen, damit der User frisch wählen kann
         }
         daySelectionReminder = reminder;
-        sheetOffsetY = 0;
     }
 
     // Schließt das Auswahlfenster animiert
@@ -562,7 +485,6 @@
         await Task.Delay(250);
         daySelectionReminder = null;
         isDaySelectionClosing = false;
-        sheetOffsetY = 0;
     }
 
     // ==========================================
@@ -573,30 +495,6 @@
     {
         notificationsEnabled = await LocalNotificationCenter.Current.RequestNotificationPermission();
         StateHasChanged();
-    }
-
-    private DayOfWeek GetDayOfWeek(string dayStr) => dayStr switch
-    {
-        "Mo" => DayOfWeek.Monday,
-        "Di" => DayOfWeek.Tuesday,
-        "Mi" => DayOfWeek.Wednesday,
-        "Do" => DayOfWeek.Thursday,
-        "Fr" => DayOfWeek.Friday,
-        "Sa" => DayOfWeek.Saturday,
-        "So" => DayOfWeek.Sunday,
-        _ => DayOfWeek.Monday
-    };
-
-    private DateTime GetNextOccurrence(DayOfWeek targetDay, int hour, int minute)
-    {
-        DateTime now = DateTime.Now;
-        DateTime nextDate = now.Date.AddHours(hour).AddMinutes(minute);
-
-        while (nextDate.DayOfWeek != targetDay || nextDate <= now)
-        {
-            nextDate = nextDate.AddDays(1);
-        }
-        return nextDate;
     }
 
     private async Task ScheduleNotificationsForTask(TodoTask task)
@@ -654,7 +552,7 @@
                     continue;
                 }
 
-                int notificationId = new Random().Next(100000, 999999);
+                int notificationId = Random.Shared.Next(100000, 999999);
                 task.NotificationIds.Add(notificationId);
 
                 var request = new NotificationRequest

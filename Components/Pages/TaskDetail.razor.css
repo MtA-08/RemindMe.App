@@ -2,9 +2,12 @@ button, a, input, select, textarea, div {
     -webkit-tap-highlight-color: transparent;
 }
 
-    input:focus {
-        outline: none;
-    }
+input:focus-visible,
+textarea:focus-visible,
+button:focus-visible {
+    outline: 2px solid #FFFFFF;
+    outline-offset: 2px;
+}
 
 .task-detail-page {
     width: 92%;
@@ -195,24 +198,9 @@ button, a, input, select, textarea, div {
     max-height: 45vh;
 }
 
-/* Wisch-Griff Bereich */
-.sheet-drag-handle-area {
-    width: 100%;
-    padding: 12px 0 6px 0;
-    display: flex;
-    justify-content: center;
-    cursor: grab;
-}
-
-.drag-handle {
-    width: 40px;
-    height: 5px;
-    background-color: rgba(255, 255, 255, 0.3);
-    border-radius: 10px;
-}
-
 /* Sheet Header */
 .sheet-header {
+    margin-top: 10px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -397,6 +385,27 @@ input[type="time"]::-webkit-calendar-picker-indicator {
     filter: invert(1);
     transform: scale(1.5);
     cursor: pointer;
+}
+
+/* Kalender & Elemente */
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    text-align: center;
+}
+
+.day-name {
+    font-size: 0.8rem;
+    color: #8e8e93;
+    font-weight: 600;
 }
 
 /* Footer & Buttons */

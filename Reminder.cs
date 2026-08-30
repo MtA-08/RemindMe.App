@@ -1,25 +1,24 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace TodoApp
 {
-    //reminder class
     public class Reminder
     {
-        public string Id { get; set; } = Guid.NewGuid().ToString();
-        public List<string> Days { get; set; } = new List<string> { "Heute" };
-        public int Hour { get; set; }
-        public int Minute { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
-        public string FormattedTime => $"{Hour:D2}:{Minute:D2}";
+        public List<DateOnly> Dates { get; set; } = new();
+
+        public TimeOnly Time { get; set; }
+
+        public string FormattedTime => Time.ToString("HH:mm");
 
         public Reminder()
         {
-            var defaultTime = DateTime.Now.AddHours(1);
-            Hour = defaultTime.Hour;
-            Minute = defaultTime.Minute;
-        }
+            var defaultDateTime = DateTime.Now.AddHours(1);
 
+            Dates.Add(DateOnly.FromDateTime(defaultDateTime));
+            Time = TimeOnly.FromDateTime(defaultDateTime);
+        }
     }
 }

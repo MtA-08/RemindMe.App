@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Plugin.LocalNotification;
+using TodoApp.Services;
 
 namespace TodoApp
 {
@@ -17,6 +18,7 @@ namespace TodoApp
                 });
 
             builder.Services.AddMauiBlazorWebView();
+            builder.Services.AddScoped<TaskStorageService>();
 
 #if DEBUG
             builder.Services.AddBlazorWebViewDeveloperTools();
