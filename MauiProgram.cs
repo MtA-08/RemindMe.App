@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Logging;
-using Plugin.LocalNotification;
+﻿using Plugin.LocalNotification;
 using TodoApp.Services;
 
 namespace TodoApp

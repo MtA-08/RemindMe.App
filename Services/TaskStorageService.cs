@@ -1,6 +1,6 @@
-﻿using System.Globalization;
+﻿using Microsoft.JSInterop;
+using System.Globalization;
 using System.Text.Json;
-using Microsoft.JSInterop;
 
 namespace TodoApp.Services
 {
