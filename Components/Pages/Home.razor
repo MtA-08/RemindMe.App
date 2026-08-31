@@ -412,26 +412,14 @@
         isTimePickerClosing = false;
     }
 
-    // Hilfsmethode zur Überprüfung, ob spezifische Tage (nicht Heute/Morgen) gewählt wurden
-    private bool IsCustomDaysSelected(Reminder reminder)
-    {
-        return reminder.Days.Any(d => d != "Heute" && d != "Morgen");
-    }
-
-    // Setzt "Heute" oder "Morgen" und löscht alle anderen Tage
-    private void SetReminderOption(Reminder reminder, string option)
-    {
-        reminder.Days.Clear();
-        reminder.Days.Add(option);
-    }
-    private List<DateOnly> selectionDaysDraft = new();
+    private List<DateOnly> selectedDatesDraft = new();
 
     // Öffnet das Fenster für die manuelle Tagesauswahl
     private void OpenDaySelection(Reminder reminder)
     {
         daySelectionReminder = reminder;
 
-        selectionDaysDraft = new List<DateOnly>(reminder.Dates);
+        selectedDatesDraft = new List<DateOnly>(reminder.Dates);
     }
 
     // ==========================================
@@ -538,41 +526,16 @@
         return dayOfWeek == 0 ? 6 : dayOfWeek - 1;
     }
 
-    // Speichert oder entfernt das gewählte Datum in der Reminder.Days Liste
-    private void ToggleDate(string dateStr)
+    private bool IsSingleDateSelected(Reminder reminder,DateOnly date)
     {
-        if (daySelectionReminder == null) return;
-
-        if (daySelectionReminder.Days.Contains(dateStr))
-        {
-            daySelectionReminder.Days.Remove(dateStr);
-        }
-        else
-        {
-            // Wenn "Heute" oder "Morgen" drin stand, vorher leeren, da wir jetzt auf Datum-Modus wechseln
-            if (daySelectionReminder.Days.Contains("Heute") || daySelectionReminder.Days.Contains("Morgen"))
-            {
-                daySelectionReminder.Days.Clear();
-            }
-            daySelectionReminder.Days.Add(dateStr);
-        }
-    }
-
-    private bool IsSingleDateSelected(
-    Reminder reminder,
-    DateOnly date)
-    {
-        return reminder.Dates.Count == 1 &&
-               reminder.Dates.Contains(date);
+        return reminder.Dates.Count == 1 && reminder.Dates.Contains(date);
     }
 
     private bool IsCustomDateSelection(Reminder reminder)
     {
-        DateOnly today =
-            DateOnly.FromDateTime(DateTime.Today);
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
 
-        DateOnly tomorrow =
-            today.AddDays(1);
+        DateOnly tomorrow = today.AddDays(1);
 
         if (reminder.Dates.Count != 1)
         {
@@ -581,13 +544,10 @@
 
         DateOnly selectedDate = reminder.Dates[0];
 
-        return selectedDate != today &&
-               selectedDate != tomorrow;
+        return selectedDate != today && selectedDate != tomorrow;
     }
 
-    private void SetSingleReminderDate(
-    Reminder reminder,
-    DateOnly date)
+    private void SetSingleReminderDate(Reminder reminder, DateOnly date)
     {
         reminder.Dates.Clear();
         reminder.Dates.Add(date);
@@ -607,17 +567,12 @@
 
     private async Task SaveDaySelectionAsync()
     {
-        if (daySelectionReminder == null ||
-            selectedDatesDraft.Count == 0)
+        if (daySelectionReminder == null || selectedDatesDraft.Count == 0)
         {
             return;
         }
 
-        daySelectionReminder.Dates =
-            selectedDatesDraft
-                .Distinct()
-                .OrderBy(date => date)
-                .ToList();
+        daySelectionReminder.Dates = selectedDatesDraft.Distinct().OrderBy(date => date).ToList();
 
         await CloseDaySelectionAsync();
     }

@@ -63,10 +63,10 @@
                             <div class="reminder-card">
                                 <img src="clock.svg" />
                                 <span class="reminder-days">
-                                    @(reminder.Days != null && reminder.Days.Any() ? string.Join(", ", reminder.Days) : "Keine Tage")
+                                    @FormatReminderDates(reminder)
                                 </span>
                                 <span class="reminder-time">
-                                    @reminder.Hour.ToString("D2"):@reminder.Minute.ToString("D2")
+                                    @reminder.FormattedTime
                                 </span>
                             </div>
                         }
@@ -144,26 +144,20 @@
                         {
                             <div class="set-reminder-card">
                                 <div class="reminder-menu-day-picker">
-                                    <button class="day-chip @(reminder.Days.Count == 1 && reminder.Days.Contains("Heute") ? "selected" : "")"
-                                            @onclick='() => SetReminderOption(reminder, "Heute")'>
-                                        Heute
+
+                                    <button class="day-chip @(IsSingleDateSelected(reminder,DateOnly.FromDateTime(DateTime.Today))? "selected" : "")"
+                                            @onclick="() => SetSingleReminderDate(reminder,DateOnly.FromDateTime(DateTime.Today))">
+                                    Heute
                                     </button>
-                                    <button class="day-chip @(reminder.Days.Count == 1 && reminder.Days.Contains("Morgen") ? "selected" : "")"
-                                            @onclick='() => SetReminderOption(reminder, "Morgen")'>
-                                        Morgen
+
+                                    <button class="day-chip @(IsSingleDateSelected(reminder,DateOnly.FromDateTime(DateTime.Today.AddDays(1)))? "selected" : "")"
+                                            @onclick="() => SetSingleReminderDate(reminder,DateOnly.FromDateTime(DateTime.Today.AddDays(1)))">
+                                    Morgen
                                     </button>
-                                    <button class="day-chip @(IsCustomDaysSelected(reminder) ? "selected" : "")"
+
+                                    <button class="day-chip @(IsCustomDateSelection(reminder)? "selected" : "")"
                                             @onclick="() => OpenDaySelection(reminder)">
                                         Tag wählen
-                                    </button>
-                                </div>
-                                <div class="reminder-card-footer">
-                                    <div class="reminder-menu-time-picker" @onclick="() => EditReminderTime(reminder)">
-                                        <img src="clock.svg" width="18" alt="Uhrzeit" />
-                                        <span>@reminder.FormattedTime</span>
-                                    </div>
-                                    <button class="reminder-delete-btn" @onclick="() => RemoveReminder(reminder)">
-                                        <img src="trash.svg" width="18" alt="Löschen" />
                                     </button>
                                 </div>
                             </div>
@@ -255,19 +249,24 @@
                         }
 
                         <!-- Eigentliche Tage -->
-                        @for (int d = 1; d <= DateTime.DaysInMonth(calendarDisplayDate.Year, calendarDisplayDate.Month); d++)
+                        @for (int d = 1;d <= DateTime.DaysInMonth(calendarDisplayDate.Year, calendarDisplayDate.Month);d++)
                         {
-                            var date = new DateTime(calendarDisplayDate.Year, calendarDisplayDate.Month, d);
-                            var dateStr = date.ToString("yyyy-MM-dd");
-                            bool isSelected = daySelectionReminder != null && daySelectionReminder.Days.Contains(dateStr);
+                            var date = new DateOnly(calendarDisplayDate.Year, calendarDisplayDate.Month,d);
 
-                            <button class="day-chip @(isSelected ? "selected" : "")"
-                                    style="width: 100%; padding: 10px 0;"
-                                    @onclick="() => ToggleDate(dateStr)">
+                            bool isSelected = selectedDatesDraft.Contains(date);
+
+                            <button class="day-chip @(isSelected ? "selected" : "")" @onclick="() => ToggleDate(date)">
                                 @d
                             </button>
                         }
                     </div>
+                </div>
+                <div class="sheet-footer">
+                    <button class="save-btn-full"
+                            disabled="@(selectedDatesDraft.Count == 0)"
+                            @onclick="SaveDaySelectionAsync">
+                        <span>Auswahl übernehmen</span>
+                    </button>
                 </div>
             </div>
         }
@@ -275,7 +274,6 @@
 </div>
 
 @code {
-    private const string TasksStorageKey = "myTasks";
     private const int MaxTaskNameLength = 24;
     private const int SheetAnimationDurationMs = 300;
 
@@ -293,6 +291,7 @@
     private TimeOnly tempTime;
     private bool notificationsEnabled = false;
     private Reminder? daySelectionReminder;
+    private List<DateOnly> selectedDatesDraft = new();
     private bool isDaySelectionClosing = false;
     private DateTime calendarDisplayDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
 
@@ -344,61 +343,73 @@
 
     private void OpenEditModal()
     {
-        if (task != null)
+        if (task == null)
         {
-            editTask = new TodoTask
-            {
-                Name = task.Name,
-                Description = task.Description,
-                Reminders = task.Reminders.Select(r => new Reminder
+            return;
+        }
+
+        editTask = new TodoTask
+        {
+            Name = task.Name,
+            Description = task.Description,
+
+            Reminders = task.Reminders
+                .Select(r => new Reminder
                 {
                     Id = r.Id,
-                    Days = new List<string>(r.Days),
-                    Hour = r.Hour,
-                    Minute = r.Minute
-                }).ToList()
-            };
-            isClosing = false;
-            isModalVisible = true;
-        }
+                    Dates = new List<DateOnly>(r.Dates),
+                    Time = r.Time
+                })
+                .ToList()
+        };
+
+        isClosing = false;
+        isModalVisible = true;
     }
 
     private Task CloseEditModalAsync() => AnimateCloseAsync(() => { isModalVisible = false; editTask = new TodoTask(); });
 
     private async Task SaveEditAsync()
     {
-        if (task != null && !string.IsNullOrWhiteSpace(editTask.Name))
+        if (task == null ||
+            string.IsNullOrWhiteSpace(editTask.Name))
         {
-            string safeName = editTask.Name.Length > MaxTaskNameLength ? editTask.Name.Substring(0, MaxTaskNameLength) : editTask.Name;
-
-            task.Name = safeName;
-            task.Description = editTask.Description;
-            task.Reminders = editTask.Reminders;
-
-            await ScheduleNotificationsForTask(task);
-
-            var json = JsonSerializer.Serialize(tasks);
-            await JSRuntime.InvokeVoidAsync("localStorage.setItem", TasksStorageKey, json);
-
-            await CloseEditModalAsync();
+            return;
         }
+
+        string safeName =
+            editTask.Name.Length > MaxTaskNameLength
+                ? editTask.Name[..MaxTaskNameLength]
+                : editTask.Name;
+
+        task.Name = safeName;
+        task.Description = editTask.Description;
+        task.Reminders = editTask.Reminders;
+
+        await ScheduleNotificationsForTaskAsync(task);
+        await TaskStorage.SaveTasksAsync(tasks);
+
+        await CloseEditModalAsync();
     }
 
     private async Task DeleteTaskAsync()
     {
-        if (task != null)
+        if (task == null)
         {
-            if (task.NotificationIds.Any())
-            {
-                LocalNotificationCenter.Current.Cancel(task.NotificationIds.ToArray());
-            }
-
-            tasks.Remove(task);
-            var json = JsonSerializer.Serialize(tasks);
-            await JSRuntime.InvokeVoidAsync("localStorage.setItem", TasksStorageKey, json);
-
-            Navigation.NavigateTo("/");
+            return;
         }
+
+        if (task.NotificationIds.Any())
+        {
+            LocalNotificationCenter.Current.Cancel(
+                task.NotificationIds.ToArray());
+        }
+
+        tasks.Remove(task);
+
+        await TaskStorage.SaveTasksAsync(tasks);
+
+        Navigation.NavigateTo("/");
     }
 
     // ==========================================
@@ -430,7 +441,7 @@
     private void EditReminderTime(Reminder reminder)
     {
         selectedReminder = reminder;
-        tempTime = tempTime;
+        tempTime = reminder.Time;
         isClosing = false;
     }
 
@@ -441,49 +452,58 @@
             return;
         }
 
-        selectedReminder.Time = TempTime;
+        selectedReminder.Time = tempTime;
 
         await CloseTimePickerAsync();
     }
 
     private Task CloseTimePickerAsync() => AnimateCloseAsync(() => selectedReminder = null);
 
-    // Hilfsmethode zur Überprüfung, ob spezifische Tage (nicht Heute/Morgen) gewählt wurden
-    private bool IsCustomDaysSelected(Reminder reminder)
+    private bool IsSingleDateSelected(Reminder reminder,DateOnly date)
     {
-        return reminder.Days.Any(d => d != "Heute" && d != "Morgen");
+        return reminder.Dates.Count == 1 && reminder.Dates.Contains(date);
     }
 
-    // Setzt "Heute" oder "Morgen" und löscht alle anderen Tage
-    private void SetReminderOption(Reminder reminder, string option)
+    private bool IsCustomDateSelection(Reminder reminder)
     {
-        reminder.Days.Clear();
-        reminder.Days.Add(option);
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+
+        DateOnly tomorrow = today.AddDays(1);
+
+        if (reminder.Dates.Count != 1)
+        {
+            return true;
+        }
+
+        DateOnly selectedDate = reminder.Dates[0];
+
+        return selectedDate != today && selectedDate != tomorrow;
     }
 
-    // Öffnet das Fenster für die manuelle Tagesauswahl
+    private void SetSingleReminderDate(Reminder reminder, DateOnly date)
+    {
+        reminder.Dates.Clear();
+        reminder.Dates.Add(date);
+    }
+
     private void OpenDaySelection(Reminder reminder)
     {
-        if (!IsCustomDaysSelected(reminder))
-        {
-            reminder.Days.Clear(); // Leert Heute/Morgen, damit der User frisch wählen kann
-        }
         daySelectionReminder = reminder;
+
+        selectedDatesDraft = new List<DateOnly>(reminder.Dates);
     }
 
     // Schließt das Auswahlfenster animiert
     private async Task CloseDaySelectionAsync()
     {
-        // Falls der Benutzer alle Tage abwählt, setzen wir es als Fallback zurück auf "Heute"
-        if (daySelectionReminder != null && daySelectionReminder.Days.Count == 0)
-        {
-            daySelectionReminder.Days.Add("Heute");
-        }
-
         isDaySelectionClosing = true;
         StateHasChanged();
+
         await Task.Delay(250);
+
         daySelectionReminder = null;
+        selectedDatesDraft.Clear();
+
         isDaySelectionClosing = false;
     }
 
@@ -495,81 +515,6 @@
     {
         notificationsEnabled = await LocalNotificationCenter.Current.RequestNotificationPermission();
         StateHasChanged();
-    }
-
-    private async Task ScheduleNotificationsForTask(TodoTask task)
-    {
-        if (task.NotificationIds.Any())
-        {
-            LocalNotificationCenter.Current.Cancel(task.NotificationIds.ToArray());
-            task.NotificationIds.Clear();
-        }
-
-        if (task.IsCompleted || !await LocalNotificationCenter.Current.AreNotificationsEnabled())
-        {
-            return;
-        }
-
-        foreach (var reminder in task.Reminders)
-        {
-            foreach (var dayStr in reminder.Days)
-            {
-                DateTime nextOccurrence;
-                NotificationRepeat repeatType = NotificationRepeat.Weekly;
-
-                // --- NEUE LOGIK FÜR HEUTE / MORGEN ---
-                if (dayStr == "Heute")
-                {
-                    nextOccurrence = DateTime.Today.AddHours(reminder.Hour).AddMinutes(reminder.Minute);
-
-                    // Falls die Uhrzeit für heute bereits vergangen ist, plane es für morgen ein
-                    if (nextOccurrence <= DateTime.Now)
-                    {
-                        nextOccurrence = nextOccurrence.AddDays(1);
-                    }
-                    repeatType = NotificationRepeat.No; // Keine wöchentliche Wiederholung für einmalige "Heute" Tasks
-                }
-                else if (dayStr == "Morgen")
-                {
-                    nextOccurrence = DateTime.Today.AddDays(1).AddHours(reminder.Hour).AddMinutes(reminder.Minute);
-                    repeatType = NotificationRepeat.No; // Keine Wiederholung
-                }
-                else if (DateTime.TryParseExact(dayStr, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out DateTime parsedDate))
-                {
-                    // Setze die Uhrzeit für das gewählte Datum
-                    nextOccurrence = parsedDate.Date.AddHours(reminder.Hour).AddMinutes(reminder.Minute);
-                    repeatType = NotificationRepeat.No; // Spezifische Daten wiederholen sich nicht wöchentlich
-
-                    // Wenn das Datum + Uhrzeit bereits in der Vergangenheit liegt, überspringen wir die Erstellung
-                    if (nextOccurrence <= DateTime.Now)
-                    {
-                        continue;
-                    }
-                }
-                else
-                {
-                    // Fallback, falls noch alte "Mo", "Di" Einträge in der Datenbank hängen sollten
-                    continue;
-                }
-
-                int notificationId = Random.Shared.Next(100000, 999999);
-                task.NotificationIds.Add(notificationId);
-
-                var request = new NotificationRequest
-                {
-                    NotificationId = notificationId,
-                    Title = "Erinnerung: " + task.Name,
-                    Description = string.IsNullOrWhiteSpace(task.Description) ? "Es ist Zeit für deine Aufgabe!" : task.Description,
-                    Schedule = new NotificationRequestSchedule
-                    {
-                        NotifyTime = nextOccurrence,
-                        RepeatType = repeatType // Setzt dynamisch Weekly oder No
-                    }
-                };
-
-                await LocalNotificationCenter.Current.Show(request);
-            }
-        }
     }
 
     // ==========================================
@@ -595,23 +540,114 @@
         return dayOfWeek == 0 ? 6 : dayOfWeek - 1;
     }
 
-    // Speichert oder entfernt das gewählte Datum in der Reminder.Days Liste
-    private void ToggleDate(string dateStr)
+    private string FormatReminderDates(Reminder reminder)
     {
-        if (daySelectionReminder == null) return;
+        return string.Join(", ", reminder.Dates.OrderBy(date => date).Select(FormatReminderDate));
+    }
 
-        if (daySelectionReminder.Days.Contains(dateStr))
+    private string FormatReminderDate(DateOnly date)
+    {
+        DateOnly today = DateOnly.FromDateTime(DateTime.Today);
+        if (date == today)
         {
-            daySelectionReminder.Days.Remove(dateStr);
+            return "Heute";
+        }
+
+        if (date == today.AddDays(1))
+        {
+            return "Morgen";
+        }
+
+        return date.ToString("dd.MM.yyyy");
+    }
+
+    private async Task ScheduleNotificationsForTaskAsync(TodoTask task)
+    {
+        if (task.NotificationIds.Any())
+        {
+            LocalNotificationCenter.Current.Cancel(task.NotificationIds.ToArray());
+
+            task.NotificationIds.Clear();
+        }
+
+        bool notificationsEnabled =
+            await LocalNotificationCenter.Current.AreNotificationsEnabled();
+
+        if (task.IsCompleted || !notificationsEnabled)
+        {
+            return;
+        }
+
+        foreach (Reminder reminder in task.Reminders)
+        {
+            foreach (DateOnly date in reminder.Dates)
+            {
+                DateTime notifyTime = date.ToDateTime(reminder.Time);
+
+                // Keine Benachrichtigung mehr für vergangene Termine.
+                if (notifyTime <= DateTime.Now)
+                {
+                    continue;
+                }
+
+                int notificationId = CreateUniqueNotificationId();
+
+                task.NotificationIds.Add(notificationId);
+
+                var request = new NotificationRequest
+                {
+                    NotificationId = notificationId,
+
+                    Title = $"Erinnerung: {task.Name}",
+
+                    Description = string.IsNullOrWhiteSpace(task.Description) ? "Es ist Zeit für deine Aufgabe!" : task.Description,
+                    Schedule = new NotificationRequestSchedule
+                    {
+                        NotifyTime = notifyTime,
+                        RepeatType = NotificationRepeat.No
+                    }
+                };
+
+                await LocalNotificationCenter.Current.Show(request);
+            }
+        }
+    }
+
+    private int CreateUniqueNotificationId()
+    {
+        var usedIds = tasks.SelectMany(task => task.NotificationIds).ToHashSet();
+        int id;
+
+        do
+        {
+            id = Random.Shared.Next(100_000, 1_000_000);
+        }
+        while (usedIds.Contains(id));
+
+        return id;
+    }
+
+    private async Task SaveDaySelectionAsync()
+    {
+        if (daySelectionReminder == null || selectedDatesDraft.Count == 0)
+        {
+            return;
+        }
+
+        daySelectionReminder.Dates = selectedDatesDraft.Distinct().OrderBy(date => date).ToList();
+
+        await CloseDaySelectionAsync();
+    }
+
+    private void ToggleDate(DateOnly date)
+    {
+        if (selectedDatesDraft.Contains(date))
+        {
+            selectedDatesDraft.Remove(date);
         }
         else
         {
-            // Wenn "Heute" oder "Morgen" drin stand, vorher leeren, da wir jetzt auf Datum-Modus wechseln
-            if (daySelectionReminder.Days.Contains("Heute") || daySelectionReminder.Days.Contains("Morgen"))
-            {
-                daySelectionReminder.Days.Clear();
-            }
-            daySelectionReminder.Days.Add(dateStr);
+            selectedDatesDraft.Add(date);
         }
     }
 }
