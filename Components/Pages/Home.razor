@@ -14,7 +14,7 @@
 
     <!-- Header -->
     <div class="page-header">
-        <button class="round-btn btn-settings" title="Einstellungen">
+        <button class="round-btn btn-settings" @onclick="() => isSettingsMenuVisible = !isSettingsMenuVisible" title="Einstellungen">
             <img src="settings.svg" width="24" height="24" />
         </button>
 
@@ -43,6 +43,26 @@
             </div>
         }
     </div>
+
+    <!-- BOTTOM SHEET: EINSTELLUNGEN -->
+    @if (isSettingsMenuVisible)
+    {
+        <div class="sheet-overlay @(isTaskModalClosing ? "closing" : "")" @onclick="() => isSettingsMenuVisible = !isSettingsMenuVisible"></div>
+        <div class="bottom-sheet @(isTaskModalClosing ? "closing" : "")">
+
+            <div class="sheet-header">
+                <h3>Einstellungen</h3>
+                <button class="close-btn" @onclick="() => isSettingsMenuVisible = !isSettingsMenuVisible">
+                    <img src="x.svg" alt="Schließen" />
+                </button>
+            </div>
+
+            <div class="sheet-content">
+                
+            </div>
+
+        </div>
+    }
 
     <!-- BOTTOM SHEET: TASK ERSTELLEN -->
     @if (isModalVisible)
@@ -109,13 +129,8 @@
                     {
                         <div class="set-reminder-card">
                             <div class="reminder-menu-day-picker">
-                                <button class="day-chip @(IsSingleDateSelected(reminder,
-                                                DateOnly.FromDateTime(DateTime.Today))
-                                                ? "selected"
-                                                : "")"
-                                        @onclick="() => SetSingleReminderDate(
-                                                reminder,
-                                                DateOnly.FromDateTime(DateTime.Today))">
+                                <button class="day-chip @(IsSingleDateSelected(reminder,DateOnly.FromDateTime(DateTime.Today))
+                                                            ? "selected" : "")" @onclick="() => SetSingleReminderDate(reminder,DateOnly.FromDateTime(DateTime.Today))">
                                 Heute
                                 </button>
                                 <button class="day-chip @(IsSingleDateSelected(
@@ -128,17 +143,15 @@
                                                 DateOnly.FromDateTime(DateTime.Today.AddDays(1)))">
                                 Morgen
                                 </button>
-                                <button class="day-chip @(IsCustomDateSelection(reminder)
-                                                ? "selected"
-                                                : "")"
-                                        @onclick="() => OpenDaySelection(reminder)">
+                                <button class="day-chip @(IsCustomDateSelection(reminder)? "selected": "")"
+                                                        @onclick="() => OpenDaySelection(reminder)">
                                     Tag wählen
                                 </button>
                             </div>
                             <div class="reminder-card-footer">
                                 <div class="reminder-menu-time-picker" @onclick="() => EditReminderTime(reminder)">
-                                    <img src="clock.svg" width="18" alt="Uhrzeit" />
-                                    <span>@reminder.FormattedTime</span>
+                                    <img src="clock.svg" width="24" alt="Uhrzeit" />
+                                    <input type="time" class="time-picker-input" @bind-value="TempTime" @bind-value:after="SaveTimeAsync" placeholder="@reminder.FormattedTime" />
                                 </div>
                                 <button class="reminder-delete-btn" @onclick="() => RemoveReminder(reminder)">
                                     <img src="red-trash.svg" width="18" alt="Löschen" />
@@ -173,7 +186,7 @@
     }
 
     <!-- BOTTOM SHEET: ZEITWÄHLER -->
-    @if (selectedReminder != null)
+    @*@if (selectedReminder != null)
     {
         <div class="sheet-overlay @(isTimePickerClosing ? "closing" : "")" @onclick="CloseTimePickerAsync"></div>
         <div class="bottom-sheet compact-sheet @(isTimePickerClosing ? "closing" : "")">
@@ -195,7 +208,7 @@
                 </button>
             </div>
         </div>
-    }
+    }*@
 
     <!-- BOTTOM SHEET: TAGE AUSWÄHLEN -->
     @if (daySelectionReminder != null)
@@ -268,8 +281,11 @@
 
     private List<TodoTask> tasks = new();
     private TodoTask newTask = new TodoTask();
+
     private bool isModalVisible = false;
     private bool isReminderMenuVisible = false;
+    private bool isSettingsMenuVisible = false;
+
     private Reminder? selectedReminder;
     private TimeOnly TempTime;
     private bool notificationsEnabled = false;
@@ -280,6 +296,8 @@
     private bool isTaskModalClosing = false;
     private bool isReminderModalClosing = false;
     private bool isTimePickerClosing = false;
+
+
 
     // ==========================================
     // Modal Steuerung
