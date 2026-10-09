@@ -5,7 +5,7 @@
 Eine einfache Erinnerungs-App, entwickelt mit **.NET MAUI** und **Blazor**. Die App nutzt native Benachrichtigungen, um dich zuverlässig an deine Aufgaben zu erinnern.
 
 > **[🔗 Hier geht's zur Live-App! (Bitte am PC die mobile Ansicht nutzen)](https://mta-08.github.io/BlazorTodoApp/)**
-> Da diese Live-App demo nur auf Blazor WASM basierst sind Funktionen wie benachrichtigungen nicht vorhanden.
+> Da diese Live-App demo nur auf Blazor WASM basiert sind Funktionen wie Benachrichtigungen nicht vorhanden.
 
 ---
 
