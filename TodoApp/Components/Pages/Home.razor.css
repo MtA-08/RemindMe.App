@@ -14,7 +14,7 @@ button:focus-visible {
     width: 92%;
     margin: 0 auto;
     padding: 16px 0;
-    padding-top: calc(16px + max(env(safe-area-inset-top), 1px));
+    padding-top: calc(16px + max(env(safe-area-inset-top), 10px));
     padding-bottom: calc(16px + max(env(safe-area-inset-bottom), 24px));
     box-sizing: border-box;
     color: #FFFFFF;
@@ -111,7 +111,7 @@ button:focus-visible {
     color: #888888;
 }
 
-/* Der neue runde Check-Button rechts */
+/* Check-Button rechts */
 .complete-btn {
     background-color: transparent;
     border: 2px solid #44444a;
@@ -251,6 +251,56 @@ button:focus-visible {
     min-height: 90px;
     resize: none;
 }
+
+/* --- EINSTELLUNGEN --- */
+.settings-options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+}
+
+.settings-option-card {
+    background-color: #1c1c1e;
+    border: 1px solid #2c2c2e;
+    border-radius: 12px;
+    box-sizing: border-box;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.2s ease;
+}
+
+    .settings-option-card:hover {
+        transform: scale(1.005);
+    }
+
+    .settings-option-card:active {
+        transform: scale(1);
+    }
+
+.settings-option-info {
+    flex-grow: 1;
+    overflow: hidden;
+    margin-right: 16px;
+}
+
+.settings-option-title {
+    font-size: 1.05rem;
+    font-weight: 500;
+    color: #FFFFFF;
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.settings-options-picture {
+    
+}
+/* --- EINSTELLUNGEN --- */
 
 /* Auswahlelemente */
 .select-menu-card {

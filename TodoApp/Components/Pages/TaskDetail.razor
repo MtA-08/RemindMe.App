@@ -3,10 +3,12 @@
 @layout MainLayout
 @inject TaskStorageService TaskStorage
 @inject NavigationManager Navigation
+@inject IStringLocalizer<RemindMe> Localizer
 
 @using TodoApp.Services
 @using Plugin.LocalNotification
 @using Plugin.LocalNotification.Core.Models
+@using System.Globalization
 
 <div class="task-detail-page">
     @if (isLoading)
@@ -42,19 +44,19 @@
         <!-- DETAILIERTE ANSICHT-MODUS -->
         <div class="detail-body">
             <div class="detail-block">
-                <span class="field-label">NAME</span>
+                <span class="field-label">@Localizer["TaskNameInputLabel"]</span>
                 <h1 class="field-value task-title">@task.Name</h1>
             </div>
 
             <div class="detail-block">
-                <span class="field-label">BESCHREIBUNG</span>
+                <span class="field-label">@Localizer["TaskDescriptionInputLabel"]</span>
                 <p class="field-value description-text">
-                    @(string.IsNullOrWhiteSpace(task.Description) ? "Keine Beschreibung vorhanden." : task.Description)
+                    @(string.IsNullOrWhiteSpace(task.Description) ? Localizer["TaskDetailViewNoDescriptionPlaceholder"] : task.Description)
                 </p>
             </div>
 
             <div class="detail-block">
-                <span class="field-label">ERINNERUNGEN</span>
+                <span class="field-label">@Localizer["TaskReminderInputLabel"]</span>
                 @if (task.Reminders != null && task.Reminders.Any())
                 {
                     <div class="reminders-list">
@@ -74,7 +76,7 @@
                 }
                 else
                 {
-                    <p class="field-value empty-text">Keine Erinnerungen.</p>
+                    <p class="field-value empty-text">@Localizer["TaskReminderInputPlaceholderNoReminder"]</p>
                 }
             </div>
         </div>
@@ -86,7 +88,7 @@
             <div class="bottom-sheet @(isClosing ? "closing" : "")">
 
                 <div class="sheet-header">
-                    <h3>Task bearbeiten</h3>
+                    <h3>@Localizer["TaskEditPopupName"]</h3>
                     <button class="close-btn" @onclick="CloseEditModalAsync">
                         <img src="x.svg" alt="Schließen" />
                     </button>
@@ -94,23 +96,23 @@
 
                 <div class="sheet-content">
                     <div class="input-group">
-                        <label>NAME</label>
-                        <input type="text" @bind="editTask.Name" maxlength="@MaxTaskNameLength" class="text-input-field" placeholder="Task Name...">
+                        <label>@Localizer["TaskNameInputLabel"]</label>
+                        <input type="text" @bind="editTask.Name" maxlength="@MaxTaskNameLength" class="text-input-field" placeholder="@Localizer["TaskNameInputPlaceholder"]">
                     </div>
 
                     <div class="input-group">
-                        <label>BESCHREIBUNG</label>
-                        <textarea @bind="editTask.Description" class="text-input-field textarea-field" placeholder="Beschreibung (optional)..."></textarea>
+                        <label>@Localizer["TaskDescriptionInputLabel"]</label>
+                        <textarea @bind="editTask.Description" class="text-input-field textarea-field" placeholder="@Localizer["TaskDescriptionInputPlaceholder"]"></textarea>
                     </div>
 
                     <div class="input-group">
-                        <label>ERINNERUNGEN</label>
+                        <label>@Localizer["TaskReminderInputLabel"]</label>
                         <div class="select-menu-card" @onclick="ToggleReminderMenu">
                             <div class="select-menu-left">
                                 <img src="clock.svg" alt="Clock" width="18" />
-                                <span>@(editTask.Reminders.Count > 0 ? $"{editTask.Reminders.Count} Erinnerung(en) aktiv" : "Keine Erinnerung")</span>
+                                <span>@(editTask.Reminders.Count > 0 ? $"{editTask.Reminders.Count} {Localizer["TaskReminderInputPlaceholderMultipleReminders"]}" : @Localizer["TaskReminderInputPlaceholderNoReminder"])</span>
                             </div>
-                            <span class="action-link">Konfigurieren</span>
+                            <span class="action-link"></span>
                         </div>
                     </div>
                 </div>
@@ -118,7 +120,7 @@
                 <div class="sheet-footer">
                     <button class="save-btn-full" @onclick="SaveEditAsync">
                         <img src="check.svg" alt="Speichern" />
-                        <span>Änderungen speichern</span>
+                        <span>@Localizer["TaskEditSaveChanges"]</span>
                     </button>
                 </div>
             </div>
@@ -127,11 +129,11 @@
         <!-- BOTTOM SHEET: ERINNERUNGEN -->
         @if (isReminderMenuVisible)
         {
-            <div class="sheet-overlay @(isClosing ? "closing" : "")" @onclick="ToggleReminderMenuAsync"></div>
-            <div class="bottom-sheet @(isClosing ? "closing" : "")">
+            <div class="sheet-overlay @(isReminderModalClosing ? "closing" : "")" @onclick="ToggleReminderMenuAsync"></div>
+            <div class="bottom-sheet @(isReminderModalClosing ? "closing" : "")">
 
                 <div class="sheet-header">
-                    <h3>Erinnerungen verwalten</h3>
+                    <h3>@Localizer["TaskAddReminderPopupName"]</h3>
                     <button class="close-btn" @onclick="ToggleReminderMenuAsync">
                         <img src="x.svg" alt="Schließen" />
                     </button>
@@ -144,20 +146,28 @@
                         {
                             <div class="set-reminder-card">
                                 <div class="reminder-menu-day-picker">
-
-                                    <button class="day-chip @(IsSingleDateSelected(reminder,DateOnly.FromDateTime(DateTime.Today))? "selected" : "")"
-                                            @onclick="() => SetSingleReminderDate(reminder,DateOnly.FromDateTime(DateTime.Today))">
-                                    Heute
+                                    <button class="day-chip @(IsSingleDateSelected(reminder, DateOnly.FromDateTime(DateTime.Today))
+                                                                                                    ? "selected" : "")" @onclick="() => SetSingleReminderDate(reminder, DateOnly.FromDateTime(DateTime.Today))">
+                                        @Localizer["TaskAddReminderReminderMenuToday"]
                                     </button>
-
-                                    <button class="day-chip @(IsSingleDateSelected(reminder,DateOnly.FromDateTime(DateTime.Today.AddDays(1)))? "selected" : "")"
-                                            @onclick="() => SetSingleReminderDate(reminder,DateOnly.FromDateTime(DateTime.Today.AddDays(1)))">
-                                    Morgen
+                                    <button class="day-chip @(IsSingleDateSelected(reminder, DateOnly.FromDateTime(DateTime.Today.AddDays(1)))
+                                                                                        ? "selected"
+                                                                                        : "")"
+                                            @onclick="() => SetSingleReminderDate(reminder, DateOnly.FromDateTime(DateTime.Today.AddDays(1)))">
+                                        @Localizer["TaskAddReminderReminderMenuTomorrow"]
                                     </button>
-
-                                    <button class="day-chip @(IsCustomDateSelection(reminder)? "selected" : "")"
+                                    <button class="day-chip @(IsCustomDateSelection(reminder) ? "selected" : "")"
                                             @onclick="() => OpenDaySelection(reminder)">
-                                        Tag wählen
+                                        @Localizer["TaskAddReminderReminderMenuPickDay"]
+                                    </button>
+                                </div>
+                                <div class="reminder-card-footer">
+                                    <div class="reminder-menu-time-picker" @onclick="() => EditReminderTime(reminder)">
+                                        <img src="clock.svg" width="24" alt="Uhrzeit" />
+                                        <input type="time" class="time-picker-input" @bind-value="tempTime" @bind-value:after="SaveTimeAsync" placeholder="@reminder.FormattedTime" />
+                                    </div>
+                                    <button class="reminder-delete-btn" @onclick="() => RemoveReminder(reminder)">
+                                        <img src="red-trash.svg" width="18" alt="Löschen" />
                                     </button>
                                 </div>
                             </div>
@@ -165,7 +175,7 @@
 
                         <button class="add-reminder-btn" @onclick="AddNewReminder">
                             <img src="plus.svg" width="18" alt="Plus" />
-                            <span>Erinnerung hinzufügen</span>
+                            <span>@Localizer["TaskAddReminderAddReminderButton"]</span>
                         </button>
                     }
                     else
@@ -182,7 +192,7 @@
                 <div class="sheet-footer">
                     <button class="save-btn-full" @onclick="ToggleReminderMenuAsync">
                         <img src="check.svg" alt="Fertig" />
-                        <span>Fertig</span>
+                        <span>@Localizer["TaskAddReminderDoneButton"]</span>
                     </button>
                 </div>
             </div>
@@ -294,6 +304,7 @@
     private List<DateOnly> selectedDatesDraft = new();
     private bool isDaySelectionClosing = false;
     private DateTime calendarDisplayDate = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+    private bool isReminderModalClosing = false;
 
     // Animation & UI States
     private bool isClosing = false;
