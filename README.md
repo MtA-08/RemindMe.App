@@ -16,13 +16,13 @@ Eine einfache Erinnerungs-App, entwickelt mit **.NET MAUI** und **Blazor**. Die 
 * **Lokale Datenspeicherung:** Deine Aufgaben werden direkt auf dem Gerät gespeichert, damit sie nicht verloren gehen.
 * **Automatisierte Benachrichtigungen:** Die Verknüpfung der eingestellten Tag und Uhrzeiten, damit Benachrichtigungen vollautomatisch zur richtigen Zeit auf dem Handy ankommen.
 * **Erledigt-Status:** Hake erledigte Aufgaben direkt ab.
+* **Sprache wechseln:** Wechsel die Sprache der App zwischen den 3 (für jetzt) bestehenden Optionen.
   
 ---
 
 ## Was sich aktuell in Entwicklung befindet (Geplante Features)
 
-* Einstellungen Menü.
-* Neue Sprachpakete und Designpakete.
+* Neue Designpakete.
 * UI/UX Verbesserungen.
 * **Fehlerbehebung:** Laufende Tests und Optimierungen auf verschiedenen Geräten und Betriebssysteme.
 
