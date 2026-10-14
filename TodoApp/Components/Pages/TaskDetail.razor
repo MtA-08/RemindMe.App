@@ -120,7 +120,7 @@
                 <div class="sheet-footer">
                     <button class="save-btn-full" @onclick="SaveEditAsync">
                         <img src="check.svg" alt="Speichern" />
-                        <span>@Localizer["TaskEditSaveChanges"]</span>
+                        <span>@Localizer["TaskEditReminderSaveChanges"]</span>
                     </button>
                 </div>
             </div>
@@ -193,31 +193,6 @@
                     <button class="save-btn-full" @onclick="ToggleReminderMenuAsync">
                         <img src="check.svg" alt="Fertig" />
                         <span>@Localizer["TaskAddReminderDoneButton"]</span>
-                    </button>
-                </div>
-            </div>
-        }
-
-        <!-- BOTTOM SHEET / MODAL: ZEITAUSWAHL -->
-        @if (selectedReminder != null)
-        {
-            <div class="sheet-overlay @(isClosing ? "closing" : "")" @onclick="CloseTimePickerAsync"></div>
-            <div class="bottom-sheet compact-sheet @(isClosing ? "closing" : "")">
-
-                <div class="sheet-header">
-                    <h3>Uhrzeit auswählen</h3>
-                    <button class="close-btn" @onclick="CloseTimePickerAsync">
-                        <img src="x.svg" alt="Schließen" />
-                    </button>
-                </div>
-
-                <div class="sheet-content center-content">
-                    <input type="time" class="time-picker-input" @bind="tempTime" />
-                </div>
-
-                <div class="sheet-footer">
-                    <button class="save-btn-full" @onclick="SaveTimeAsync">
-                        <span>Uhrzeit übernehmen</span>
                     </button>
                 </div>
             </div>

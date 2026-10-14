@@ -639,13 +639,11 @@
     {
         var culture = new CultureInfo(language);
 
-        // 1. Set the runtime culture for the current application
         CultureInfo.DefaultThreadCurrentCulture = culture;
         CultureInfo.DefaultThreadCurrentUICulture = culture;
         CultureInfo.CurrentCulture = culture;
         CultureInfo.CurrentUICulture = culture;
 
-        // 2. Persist user preference using MAUI Essentials Preferences
         Preferences.Default.Set("selected_language", language);
     }
 

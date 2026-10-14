@@ -6,16 +6,15 @@ namespace TodoApp
     {
         public App()
         {
-            InitializeComponent();
 
-            string savedLanguage = Preferences.Default.Get("selected_language", CultureInfo.CurrentCulture.Name);
+            string savedLanguage = Preferences.Default.Get("selected_language",CultureInfo.CurrentUICulture.Name);
 
             var culture = new CultureInfo(savedLanguage);
 
             CultureInfo.DefaultThreadCurrentCulture = culture;
             CultureInfo.DefaultThreadCurrentUICulture = culture;
-            CultureInfo.CurrentCulture = culture;
-            CultureInfo.CurrentUICulture = culture;
+
+            InitializeComponent();
         }
 
         protected override Window CreateWindow(IActivationState? activationState)
